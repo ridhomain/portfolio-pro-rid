@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, Card, Row, Col, Timeline, Space, Statistic, Divider, Avatar, Tag, Badge } from 'antd';
+import { Typography, Card, Row, Col, Timeline, Space, Statistic, Divider, Avatar, Tag, Badge, Spin } from 'antd';
 import { 
   UserOutlined, 
   CodeOutlined, 
@@ -19,6 +19,7 @@ const { Title, Paragraph, Text } = Typography;
 const AboutPage: React.FC = () => {
   const { data, loading } = usePortfolio();
 
+  // Dynamic stats using data from Google Sheets
   const stats = [
     {
       title: 'Years Experience',
@@ -28,10 +29,10 @@ const AboutPage: React.FC = () => {
       color: '#1890ff'
     },
     {
-      title: 'Cost Reduction',
-      value: '40',
-      suffix: '%',
-      icon: <TrophyOutlined />,
+      title: 'Technologies',
+      value: data.about.technologies || '15',
+      suffix: '+',
+      icon: <CodeOutlined />,
       color: '#52c41a'
     },
     {
@@ -43,7 +44,7 @@ const AboutPage: React.FC = () => {
     {
       title: 'Specialization',
       value: 'Backend + Architecture',
-      icon: <CodeOutlined />,
+      icon: <TeamOutlined />,
       color: '#eb2f96'
     },
   ];
@@ -71,15 +72,15 @@ const AboutPage: React.FC = () => {
       color: '#52c41a',
       children: (
         <div>
-          <Title level={4} style={{ marginBottom: '4px' }}>Fullstack → Backend Specialist</Title>
+          <Title level={4} style={{ marginBottom: '4px' }}>Software Engineer</Title>
           <Text type="secondary" style={{ fontSize: '14px' }}>Current Company • 2021 - December 2024</Text>
           <Paragraph style={{ marginTop: '8px', marginBottom: '8px' }}>
-            Evolved from fullstack to backend focus. Achieved 40% cost reduction through holistic system optimization.
+            Made strategic technical decisions that progressively improved system reliability and performance. Naturally evolved toward backend specialization while maintaining full-stack capabilities.
           </Paragraph>
           <div>
-            <Tag color="green">Performance</Tag>
-            <Tag color="orange">Cost Optimization</Tag>
-            <Tag color="blue">Scalability</Tag>
+            <Tag color="green">System Design</Tag>
+            <Tag color="orange">Backend Focus</Tag>
+            <Tag color="blue">Technical Decisions</Tag>
           </div>
         </div>
       ),
@@ -88,15 +89,15 @@ const AboutPage: React.FC = () => {
       color: '#722ed1',
       children: (
         <div>
-          <Title level={4} style={{ marginBottom: '4px' }}>Software Engineer</Title>
+          <Title level={4} style={{ marginBottom: '4px' }}>Fullstack Developer → Software Engineer</Title>
           <Text type="secondary" style={{ fontSize: '14px' }}>Freelance • 2019 - 2021</Text>
           <Paragraph style={{ marginTop: '8px', marginBottom: '8px' }}>
-            Delivered solutions for enterprise clients like Yamaha and BNI, focusing on business process analysis.
+            Delivered end-to-end solutions for enterprise clients including Yamaha and BNI. Focused on understanding business processes to build systems that actually solve problems.
           </Paragraph>
           <div>
-            <Tag color="purple">Enterprise</Tag>
+            <Tag color="purple">Enterprise Solutions</Tag>
             <Tag color="cyan">Business Analysis</Tag>
-            <Tag color="geekblue">System Design</Tag>
+            <Tag color="geekblue">Fullstack Development</Tag>
           </div>
         </div>
       ),
@@ -105,14 +106,15 @@ const AboutPage: React.FC = () => {
       color: '#faad14',
       children: (
         <div>
-          <Title level={4} style={{ marginBottom: '4px' }}>Teaching & Business Analyst</Title>
+          <Title level={4} style={{ marginBottom: '4px' }}>Teaching Assistant & Business Analyst</Title>
           <Text type="secondary" style={{ fontSize: '14px' }}>Project-Based • Sep 2018 - Jan 2019</Text>
           <Paragraph style={{ marginTop: '8px', marginBottom: '8px' }}>
-            Applied analytical skills in hybrid role bridging technical and business domains.
+            Taught programming fundamentals to 20+ students while applying analytical skills in business context. This dual role strengthened my ability to communicate complex concepts simply.
           </Paragraph>
           <div>
             <Tag color="gold">Teaching</Tag>
-            <Tag color="orange">Analysis</Tag>
+            <Tag color="orange">Communication</Tag>
+            <Tag color="yellow">Analysis</Tag>
           </div>
         </div>
       ),
@@ -122,27 +124,49 @@ const AboutPage: React.FC = () => {
       children: (
         <div>
           <Title level={4} style={{ marginBottom: '4px' }}>Career Transition</Title>
-          <Text type="secondary" style={{ fontSize: '14px' }}>Bootcamp • July - August 2018</Text>
+          <Text type="secondary" style={{ fontSize: '14px' }}>GarageScript (c0d3.com) • July - August 2018</Text>
           <Paragraph style={{ marginTop: '8px', marginBottom: '8px' }}>
-            Intensive training transitioning from Civil Engineering to software development.
+            Intensive bootcamp that transformed my engineering mindset into practical coding skills. The beginning of my journey from Civil Engineering to Software Engineering.
           </Paragraph>
           <div>
             <Tag color="magenta">Career Change</Tag>
-            <Tag color="red">Fast Learning</Tag>
+            <Tag color="red">Fullstack Fundamentals</Tag>
           </div>
         </div>
       ),
     },
   ];
 
+  // Use skills from Google Sheets data with new categorization
   const techStack = {
-    backend: ['Node.js (Hapi, Fastify)', 'Go', 'Python (Django, Odoo)'],
-    frontend: ['React', 'UmiJS', 'Next.js'],
-    databases: ['PostgreSQL', 'MongoDB', 'Redis', 'NATS JetStream'],
-    microservices: ['NATS', 'NATS JetStream', 'Redis'],
-    devops: ['Linux', 'Docker', 'Kubernetes', 'GitLab CI/CD', 'GCP'],
-    tools: ['Git', 'VS Code', 'Postman', 'Claude AI']
+    languages_expert: data.skills?.Languages_Expert || ['JavaScript', 'TypeScript'],
+    backend_expert: data.skills?.Backend_Expert || ['Fastify', 'HapiJS', 'Express'],
+    languages_intermediate: data.skills?.Languages_Intermediate || ['Go', 'Python'],
+    backend_intermediate: data.skills?.Backend_Intermediate || ['Gin', 'Fiber', 'Goroutines', 'WebSockets (Melody)'],
+    python: data.skills?.Python || ['Django', 'Odoo'],
+    frontend_intermediate: data.skills?.Frontend_Intermediate || ['React', 'UmiJS', 'Next.js', 'Ant Design'],
+    databases: data.skills?.Databases || ['PostgreSQL', 'MongoDB', 'Redis'],
+    datalake: data.skills?.DataLake || ['Trino', 'Iceberg', 'MinIO'],
+    messaging: data.skills?.Messaging || ['NATS', 'NATS JetStream'],
+    monitoring: data.skills?.Monitoring || ['Grafana', 'Prometheus', 'Loki', 'Promtail'],
+    devops: data.skills?.DevOps || ['Linux', 'Docker', 'Kubernetes', 'GitLab CI/CD', 'GCP'],
+    tools: data.skills?.Tools || ['Git', 'VS Code', 'Postman', 'Claude AI'],
+    future: data.skills?.Future || ['gRPC', 'Vector Databases', 'Advanced Go Patterns', 'OpenTelemetry']
   };
+
+  if (loading) {
+    return (
+      <div className="section">
+        <div className="container">
+          <Row justify="center" style={{ minHeight: 400 }}>
+            <Col>
+              <Spin size="large" />
+            </Col>
+          </Row>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="section" style={{ paddingTop: '48px', paddingBottom: '48px' }}>
@@ -168,9 +192,6 @@ const AboutPage: React.FC = () => {
                 <Title level={3} type="secondary" style={{ marginTop: 0, fontWeight: 400 }}>
                   {data.about.title || 'Technical Lead'}
                 </Title>
-                <Text style={{ fontSize: '16px', color: 'rgba(0, 0, 0, 0.65)' }}>
-                  Civil Engineering → Software Architecture
-                </Text>
               </div>
             </Space>
           </Col>
@@ -234,14 +255,18 @@ const AboutPage: React.FC = () => {
               <Space direction="vertical" size="large" style={{ width: '100%' }}>
                 <div>
                   <Title level={4} style={{ color: '#1890ff', marginBottom: '12px' }}>
-                    Engineering Mindset Meets Software Innovation
+                    Practical Creativity: Dancing with Constraints
                   </Title>
                   <Paragraph style={{ fontSize: '16px', lineHeight: 1.7 }}>
-                    {data.about.description || 'Civil Engineering graduate turned Technical Lead with 6+ years in software development. My engineering background provides exceptional analytical skills for creating business-impactful technical solutions.'}
+                    {data.about.description || 'With 6 years of experience in software engineering, I\'ve evolved from a curious developer into a technical leader who bridges the gap between complex technical concepts and business outcomes.'}
                   </Paragraph>
                   
                   <Paragraph style={{ fontSize: '16px', lineHeight: 1.7 }}>
-                    {data.about.expertise || 'Combining Civil Engineering analytical rigor with fast learning and holistic system understanding. I specialize in backend architecture that delivers measurable business impact.'}
+                    I believe the best engineering happens within constraints, not despite them. Where others see limitations, I see creative opportunities. My decisions aren\'t driven by what\'s trending on tech Twitter, but by what actually moves the needle - proven tools, pragmatic architectures, and solutions that engineers can maintain at 3 AM without cursing my name.
+                  </Paragraph>
+
+                  <Paragraph style={{ fontSize: '16px', lineHeight: 1.7 }}>
+                    {data.about.expertise || 'My exceptional analytical and problem-solving skills, combined with a focus on system architecture and technical leadership, enable me to design solutions that reduce costs while improving maintainability, scalability, and performance.'}
                   </Paragraph>
                 </div>
 
@@ -256,22 +281,22 @@ const AboutPage: React.FC = () => {
                     <div>
                       <Text strong>🏗️ Engineering Foundation:</Text>
                       <br />
-                      <Text type="secondary">Civil Engineering degree provides systematic, structural thinking</Text>
+                      <Text type="secondary">Civil Engineering isn't just my degree - it's my thinking framework. The analytical rigor and systematic approach that others might miss comes naturally.</Text>
                     </div>
                     <div>
-                      <Text strong>🎯 Business-Technical Bridge:</Text>
+                      <Text strong>🎯 Business Acumen:</Text>
                       <br />
-                      <Text type="secondary">Translating business needs into impactful technical solutions</Text>
+                      <Text type="secondary">Top-notch ability to analyze businesses holistically. Given context, I can read between the lines and understand the real problems beyond technical requirements.</Text>
                     </div>
                     <div>
-                      <Text strong>⚡ Rapid Learning:</Text>
+                      <Text strong>⚡ Rapid Learning + Pattern Recognition:</Text>
                       <br />
-                      <Text type="secondary">Fast adaptation while maintaining specialization focus</Text>
+                      <Text type="secondary">Fast adaptation while maintaining depth. I quickly identify patterns and apply proven solutions across different contexts.</Text>
                     </div>
                     <div>
-                      <Text strong>🔍 Holistic Vision:</Text>
+                      <Text strong>🔍 Systems Thinking:</Text>
                       <br />
-                      <Text type="secondary">Top-notch ability to see and improve systems as a whole</Text>
+                      <Text type="secondary">See the forest AND the trees. I understand how individual decisions ripple through entire systems, enabling transformative improvements.</Text>
                     </div>
                   </Space>
                 </div>
@@ -293,69 +318,137 @@ const AboutPage: React.FC = () => {
             >
               <Space direction="vertical" size="large" style={{ width: '100%' }}>
                 <div>
-                  <Badge.Ribbon text="Specialization" color="blue">
+                  <Badge.Ribbon text="Expert" color="blue">
                     <div style={{ padding: '8px 0' }}>
-                      <Title level={5} style={{ marginBottom: '8px' }}>Backend Development</Title>
-                      <Space wrap>
-                        {techStack.backend.map(tech => (
-                          <Tag key={tech} color="blue">{tech}</Tag>
-                        ))}
+                      <Title level={5} style={{ marginBottom: '8px' }}>Core Expertise</Title>
+                      <Space direction="vertical" size="small" style={{ width: '100%' }}>
+                        <div>
+                          <Text strong>Languages:</Text>
+                          <Space wrap style={{ marginLeft: '8px' }}>
+                            {techStack.languages_expert.map(lang => (
+                              <Tag key={lang} color="blue" style={{ fontWeight: 'bold' }}>{lang}</Tag>
+                            ))}
+                          </Space>
+                        </div>
+                        <div>
+                          <Text strong>Backend:</Text>
+                          <Space wrap style={{ marginLeft: '8px' }}>
+                            {techStack.backend_expert.map(tech => (
+                              <Tag key={tech} color="green">{tech}</Tag>
+                            ))}
+                          </Space>
+                        </div>
                       </Space>
                     </div>
                   </Badge.Ribbon>
                 </div>
 
                 <div>
-                  <Title level={5} style={{ marginBottom: '8px' }}>Frontend</Title>
-                  <Space wrap>
-                    {techStack.frontend.map(tech => (
-                      <Tag key={tech} color="cyan">{tech}</Tag>
-                    ))}
-                  </Space>
+                  <Badge.Ribbon text="Intermediate" color="green">
+                    <div style={{ padding: '8px 0' }}>
+                      <Title level={5} style={{ marginBottom: '8px' }}>Growing Skills</Title>
+                      <Space direction="vertical" size="small" style={{ width: '100%' }}>
+                        <div>
+                          <Text strong>Frontend:</Text>
+                          <Space wrap style={{ marginLeft: '8px' }}>
+                            {techStack.frontend_intermediate.map(tech => (
+                              <Tag key={tech} color="cyan">{tech}</Tag>
+                            ))}
+                          </Space>
+                        </div>
+                        <div>
+                          <Text strong>Go:</Text>
+                          <Space wrap style={{ marginLeft: '8px' }}>
+                            {techStack.backend_intermediate.map(tech => (
+                              <Tag key={tech} color="geekblue">{tech}</Tag>
+                            ))}
+                          </Space>
+                        </div>
+                        <div>
+                          <Text strong>Python:</Text>
+                          <Space wrap style={{ marginLeft: '8px' }}>
+                            {techStack.python.map(tech => (
+                              <Tag key={tech}>{tech}</Tag>
+                            ))}
+                          </Space>
+                        </div>
+                      </Space>
+                    </div>
+                  </Badge.Ribbon>
                 </div>
 
                 <div>
-                  <Title level={5} style={{ marginBottom: '8px' }}>Databases & Storage</Title>
-                  <Space wrap>
-                    {techStack.databases.map(tech => (
-                      <Tag key={tech} color="green">{tech}</Tag>
-                    ))}
-                  </Space>
-                </div>
-
-                <div>
-                  <Title level={5} style={{ marginBottom: '8px' }}>Microservices</Title>
-                  <Space wrap>
-                    {techStack.microservices.map(tech => (
-                      <Tag key={tech} color="purple">{tech}</Tag>
-                    ))}
-                  </Space>
-                </div>
-
-                <div>
-                  <Title level={5} style={{ marginBottom: '8px' }}>DevOps & Cloud</Title>
-                  <Space wrap>
-                    {techStack.devops.map(tech => (
-                      <Tag key={tech} color="orange">{tech}</Tag>
-                    ))}
-                  </Space>
-                </div>
-
-                <div>
-                  <Title level={5} style={{ marginBottom: '8px' }}>Development Tools</Title>
-                  <Space wrap>
-                    {techStack.tools.map(tech => (
-                      <Tag key={tech} color="geekblue">{tech}</Tag>
-                    ))}
+                  <Title level={5} style={{ marginBottom: '8px' }}>Infrastructure & Tools</Title>
+                  <Space direction="vertical" size="small" style={{ width: '100%' }}>
+                    <div>
+                      <Text strong>Databases:</Text>
+                      <Space wrap style={{ marginLeft: '8px' }}>
+                        {techStack.databases.map(tech => (
+                          <Tag key={tech} color="green">{tech}</Tag>
+                        ))}
+                      </Space>
+                    </div>
+                    <div>
+                      <Text strong>Data Lake:</Text>
+                      <Space wrap style={{ marginLeft: '8px' }}>
+                        {techStack.datalake.map(tech => (
+                          <Tag key={tech} color="purple">{tech}</Tag>
+                        ))}
+                      </Space>
+                      <Text type="secondary" style={{ fontSize: '12px', display: 'block', marginTop: '4px' }}>
+                        ✨ Implemented enterprise data lake solution
+                      </Text>
+                    </div>
+                    <div>
+                      <Text strong>Messaging & Events:</Text>
+                      <Space wrap style={{ marginLeft: '8px' }}>
+                        {techStack.messaging.map(tech => (
+                          <Tag key={tech} color="orange">{tech}</Tag>
+                        ))}
+                      </Space>
+                    </div>
+                    <div>
+                      <Text strong>Monitoring:</Text>
+                      <Space wrap style={{ marginLeft: '8px' }}>
+                        {techStack.monitoring.map(tech => (
+                          <Tag key={tech} color="gold">{tech}</Tag>
+                        ))}
+                      </Space>
+                    </div>
+                    <div>
+                      <Text strong>DevOps:</Text>
+                      <Space wrap style={{ marginLeft: '8px' }}>
+                        {techStack.devops.map(tech => (
+                          <Tag key={tech}>{tech}</Tag>
+                        ))}
+                      </Space>
+                    </div>
                   </Space>
                 </div>
 
                 <Divider />
 
-                <div style={{ textAlign: 'center', padding: '16px', backgroundColor: '#f8f9fa', borderRadius: '8px' }}>
-                  <Text strong style={{ color: '#1890ff' }}>
-                    "Strategic specialization in Node.js + Go while staying open to proven tools that enhance backend architecture capabilities"
-                  </Text>
+                <div>
+                  <Badge.Ribbon text="Learning Path" color="purple">
+                    <div style={{ padding: '8px 0' }}>
+                      <Title level={5} style={{ marginBottom: '8px' }}>Future Focus</Title>
+                      <Space direction="vertical" size="small" style={{ width: '100%' }}>
+                        {techStack.future.map((item, index) => {
+                          const descriptions = [
+                            'Better service communication',
+                            'AI/ML backend support',
+                            'Distributed systems',
+                            'Unified observability'
+                          ];
+                          return (
+                            <div key={item}>
+                              <Text><Text strong>{item}</Text> - {descriptions[index] || 'Next learning goal'}</Text>
+                            </div>
+                          );
+                        })}
+                      </Space>
+                    </div>
+                  </Badge.Ribbon>
                 </div>
               </Space>
             </Card>
@@ -384,29 +477,47 @@ const AboutPage: React.FC = () => {
           </Col>
         </Row>
 
-        {/* Achievement Highlight */}
+        {/* Education */}
         <Row style={{ marginTop: '32px' }}>
           <Col xs={24}>
             <Card 
-              style={{ 
-                borderRadius: '12px',
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                border: 'none'
-              }}
+              title={
+                <Space>
+                  <BookOutlined style={{ color: '#1890ff' }} />
+                  <span>Education</span>
+                </Space>
+              }
+              style={{ borderRadius: '12px' }}
+              headStyle={{ borderBottom: '2px solid #f0f0f0' }}
             >
-              <Row align="middle" gutter={[24, 24]}>
-                <Col xs={24} md={8} style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: '64px', color: 'white' }}>
-                    <TrophyOutlined />
-                  </div>
+              <Row gutter={[24, 24]}>
+                <Col xs={24} md={12}>
+                  <Card bordered={false} style={{ backgroundColor: '#f8f9fa' }}>
+                    <Space direction="vertical" size="small">
+                      <Title level={4} style={{ marginBottom: '4px' }}>
+                        Bachelor of Civil Engineering
+                      </Title>
+                      <Text type="secondary">{data.about.university || 'Universitas Indonesia'}</Text>
+                      <Text>{data.about.educationYear || '2013 - 2018'}</Text>
+                      <Paragraph style={{ marginTop: '8px', marginBottom: 0 }}>
+                        Strong foundation in analytical thinking, problem-solving, and systematic approach to complex challenges.
+                      </Paragraph>
+                    </Space>
+                  </Card>
                 </Col>
-                <Col xs={24} md={16}>
-                  <Title level={3} style={{ color: 'white', marginBottom: '12px' }}>
-                    Key Achievement: 40% Cost Reduction
-                  </Title>
-                  <Paragraph style={{ color: 'rgba(255,255,255,0.9)', fontSize: '16px', marginBottom: 0 }}>
-                    Successfully designed and implemented a comprehensive system overhaul that achieved a remarkable 40% reduction in operational costs while significantly improving maintainability, scalability, and performance. This demonstrates my ability to see systems holistically and deliver transformative business impact.
-                  </Paragraph>
+                <Col xs={24} md={12}>
+                  <Card bordered={false} style={{ backgroundColor: '#f8f9fa' }}>
+                    <Space direction="vertical" size="small">
+                      <Title level={4} style={{ marginBottom: '4px' }}>
+                        Software Engineering Bootcamp
+                      </Title>
+                      <Text type="secondary">{data.about.bootcamp || 'GarageScript (c0d3.com)'}</Text>
+                      <Text>{data.about.bootcampYear || 'July - August 2018'}</Text>
+                      <Paragraph style={{ marginTop: '8px', marginBottom: 0 }}>
+                        Career transition program focusing on full-stack development, marking the beginning of my software engineering journey.
+                      </Paragraph>
+                    </Space>
+                  </Card>
                 </Col>
               </Row>
             </Card>
@@ -428,7 +539,7 @@ const AboutPage: React.FC = () => {
                 </Paragraph>
                 <div style={{ marginTop: '24px' }}>
                   <Text style={{ fontSize: '18px', fontStyle: 'italic', color: '#1890ff' }}>
-                    "Every technical decision should drive measurable business impact"
+                    {data.about.philosophy || '"The best solution isn\'t the fanciest—it\'s the one that works within constraints while solving real problems"'}
                   </Text>
                 </div>
               </Space>

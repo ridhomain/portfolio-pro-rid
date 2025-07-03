@@ -26,15 +26,19 @@ const mockData = {
     expertise: 'My expertise spans across multiple programming languages and frameworks, with a focus on creating efficient, maintainable, and innovative solutions.',
     yearsExperience: '9',
     projectsCompleted: '50',
-    technologies: '15'
+    technologies: '15',
+    clients: '20',
+    achievements: 'Successfully designed and implemented a comprehensive system overhaul that reduced operational costs while improving maintainability, scalability, and performance.',
+    philosophy: "Great software isn't just about writing code—it's about understanding problems deeply, designing solutions thoughtfully, and implementing systems that create lasting impact."
   },
   skills: {
-    Languages: ['Python', 'Golang', 'JavaScript', 'TypeScript', 'Java'],
-    Backend: ['Node.js', 'Django', 'FastAPI', 'Express.js', 'PostgreSQL'],
-    Frontend: ['React', 'Vue.js', 'HTML5', 'CSS3', 'Tailwind CSS'],
-    Database: ['PostgreSQL', 'MongoDB', 'Redis', 'MySQL', 'Elasticsearch'],
-    DevOps: ['Docker', 'Kubernetes', 'AWS', 'CI/CD', 'Linux'],
-    Tools: ['Git', 'VSCode', 'Postman', 'Jira', 'Figma']
+    Languages: ['JavaScript', 'TypeScript', 'Go', 'Python'],
+    Backend: ['Fastify', 'HapiJS', 'Express', 'Go Fiber', 'Django', 'Odoo'],
+    Frontend: ['React', 'UmiJS', 'Next.js', 'Ant Design'],
+    Databases: ['PostgreSQL', 'MongoDB', 'Redis', 'NATS JetStream', 'Trino', 'Iceberg', 'MinIO'],
+    Microservices: ['NATS', 'NATS JetStream', 'Redis'],
+    DevOps: ['Linux', 'Docker', 'Kubernetes', 'GitLab CI/CD', 'GCP'],
+    Tools: ['Git', 'VS Code', 'Postman', 'Claude AI']
   },
   projects: [
     {
@@ -74,8 +78,6 @@ const mockData = {
 class GoogleSheetsService {
   private initialized = false;
   private initPromise: Promise<void> | null = null;
-  private cache: Map<string, { data: any; timestamp: number }> = new Map();
-  private cacheTimeout = 5 * 60 * 1000; // 5 minutes
 
   private async initializeGapi(): Promise<void> {
     if (this.initialized) return;
@@ -109,13 +111,6 @@ class GoogleSheetsService {
   }
 
   async getSheetData(range: string) {
-    // Check cache first
-    const cached = this.cache.get(range);
-    if (cached && Date.now() - cached.timestamp < this.cacheTimeout) {
-      console.log(`Using cached data for ${range}`);
-      return cached.data;
-    }
-
     // Use mock data if no credentials
     if (!hasCredentials()) {
       return this.getMockData(range);
@@ -133,10 +128,7 @@ class GoogleSheetsService {
       });
       
       const values = response.result.values || [];
-      
-      // Cache the result
-      this.cache.set(range, { data: values, timestamp: Date.now() });
-      console.log(`Successfully fetched and cached data for ${range}`);
+      console.log(`Successfully fetched data for ${range}`);
       
       return values;
     } catch (error: any) {
@@ -211,6 +203,8 @@ class GoogleSheetsService {
     const result: Record<string, string[]> = {};
     data.forEach(([category, skills]) => {
       if (category && skills) {
+        // Handle the new categorization format
+        const cleanCategory = category.replace(/_Expert|_Intermediate/g, '');
         result[category] = skills.split(',').map((s: string) => s.trim());
       }
     });
@@ -233,16 +227,10 @@ class GoogleSheetsService {
     });
   }
 
-  // Clear cache method for testing
-  clearCache() {
-    this.cache.clear();
-  }
-
   // Force re-initialization (useful for testing)
   reset() {
     this.initialized = false;
     this.initPromise = null;
-    this.clearCache();
   }
 }
 
