@@ -16,7 +16,6 @@ const BasicLayout: React.FC = () => {
   const menuItems: MenuProps['items'] = [
     { key: '/', label: 'Home' },
     { key: '/about', label: 'About' },
-    { key: '/skills', label: 'Skills' },
     { key: '/projects', label: 'Projects' },
     { key: '/contact', label: 'Contact' },
   ];
@@ -28,7 +27,7 @@ const BasicLayout: React.FC = () => {
 
   return (
     <ConfigProvider theme={theme}>
-      <Layout className={styles.layout}>
+      <Layout className={styles.layout} style={{ minHeight: '100vh' }}>
         <Header className={styles.header}>
           <div className={styles.headerContainer}>
             <Space 
@@ -47,7 +46,7 @@ const BasicLayout: React.FC = () => {
                 style={{ margin: 0 }}
                 className={styles.logoText}
               >
-                Ahmad Ridho
+                Ridho's Portfolio
               </Typography.Title>
             </Space>
             
@@ -58,6 +57,12 @@ const BasicLayout: React.FC = () => {
               selectedKeys={[location.pathname]}
               onClick={handleMenuClick}
               className={styles.desktopMenu}
+              style={{
+                flex: 1,
+                minWidth: 0,
+                border: 'none',
+                lineHeight: '56px'
+              }}
             />
             
             {/* Mobile Menu Button */}
@@ -91,13 +96,13 @@ const BasicLayout: React.FC = () => {
           />
         </Drawer>
         
-        <Content className={styles.content}>
+        <Content className={styles.content} style={{ flex: 1 }}>
           <Outlet />
         </Content>
         
         <Footer className={styles.footer}>
           <Text type="secondary">
-            © 2024 Ahmad Ridho. All rights reserved.
+            © 2025 Ahmad Ridho Portfolio. All rights reserved.
           </Text>
         </Footer>
       </Layout>

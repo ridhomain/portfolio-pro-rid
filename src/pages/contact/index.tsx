@@ -50,7 +50,7 @@ const ContactPage: React.FC = () => {
 
   return (
     <div style={{ 
-      minHeight: 'calc(100vh - 56px)',
+      flex: 1,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',

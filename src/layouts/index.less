@@ -8,6 +8,8 @@
 
 .layout {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   background-color: #fafafa;
 }
 
@@ -63,12 +65,50 @@
     display: flex;
   }
   
-  :global {
-    .ant-menu-item {
+  &:global(.ant-menu-horizontal) {
+    border-bottom: none;
+    line-height: 56px;
+    
+    > :global(.ant-menu-item) {
+      position: relative;
+      height: 56px;
+      line-height: 54px; // Slightly less to account for border
+      margin: 0;
+      padding: 0 16px;
+      top: 0;
+      
       &::after {
+        content: '';
+        position: absolute;
         bottom: 0;
-        border-radius: 2px;
+        left: 16px;
+        right: 16px;
+        height: 2px;
+        background-color: transparent;
+        transition: background-color 0.3s;
       }
+      
+      &:hover {
+        color: #165c3b;
+        
+        &::after {
+          background-color: #165c3b;
+        }
+      }
+      
+      &:global(.ant-menu-item-selected) {
+        color: #165c3b;
+        
+        &::after {
+          background-color: #165c3b;
+        }
+      }
+    }
+    
+    // Override Ant Design's default styles
+    :global(.ant-menu-item-selected),
+    :global(.ant-menu-item):hover {
+      border-bottom-color: transparent;
     }
   }
 }
@@ -86,7 +126,7 @@
 
 .content {
   margin-top: 56px; // Reduced from 64px to match header
-  min-height: calc(100vh - 56px); // Only subtract header height
+  flex: 1 0 auto; // Grow to fill available space
   background-color: #fafafa;
   display: flex;
   flex-direction: column;
@@ -97,6 +137,7 @@
   padding: 24px 16px;
   background: #ffffff;
   border-top: 1px solid rgba(0, 0, 0, 0.06);
+  flex-shrink: 0; // Prevent footer from shrinking
   
   @media @tablet, @desktop {
     padding: 24px 50px;

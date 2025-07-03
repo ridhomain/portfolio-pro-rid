@@ -40,6 +40,15 @@ export const theme: ThemeConfig = {
       itemSelectedColor: '#165c3b',
       horizontalItemSelectedColor: '#165c3b',
       itemHoverColor: '#165c3b',
+      // Remove default backgrounds
+      itemActiveBg: 'transparent',
+      itemSelectedBg: 'transparent',
+      horizontalItemSelectedBg: 'transparent',
+      // Remove margins
+      itemMarginInline: 0,
+      // Consistent height
+      itemHeight: 56,
+      horizontalLineHeight: '56px',
     },
     Button: {
       // Mobile-friendly button sizing

@@ -6,10 +6,11 @@ import { history } from 'umi';
 const NotFoundPage: React.FC = () => {
   return (
     <div style={{ 
-      minHeight: 'calc(100vh - 64px)', 
+      flex: 1,
       display: 'flex', 
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      padding: '24px'
     }}>
       <Result
         status="404"
@@ -20,6 +21,7 @@ const NotFoundPage: React.FC = () => {
             <Button 
               icon={<ArrowLeftOutlined />}
               onClick={() => history.back()}
+              size="large"
             >
               Go Back
             </Button>
@@ -27,6 +29,7 @@ const NotFoundPage: React.FC = () => {
               type="primary" 
               icon={<HomeOutlined />}
               onClick={() => history.push('/')}
+              size="large"
             >
               Back Home
             </Button>

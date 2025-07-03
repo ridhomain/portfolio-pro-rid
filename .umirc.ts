@@ -11,11 +11,10 @@ export default defineConfig({
   routes: [
     { exact: true, path: '/', component: '@/pages/index' },
     { path: '/about', component: '@/pages/about' },
-    { path: '/skills', component: '@/pages/skills' },
     { path: '/projects', component: '@/pages/projects' },
     // { path: '/project/:id', component: '@/pages/project/[id]' },
     { path: '/contact', component: '@/pages/contact' },
-    { component: '@/pages/404' }, // 404 page
+    { path: '*', component: '@/pages/404' },
   ],
   npmClient: 'pnpm',
 });
