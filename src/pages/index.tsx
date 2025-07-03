@@ -10,24 +10,42 @@ const HomePage: React.FC = () => {
   const { data } = usePortfolio();
   
   return (
-    <div style={{ minHeight: 'calc(100vh - 64px)', display: 'flex', alignItems: 'center' }}>
+    <div style={{ minHeight: 'calc(100vh - 64px)' }}>
       <div className="container">
-        <Row justify="center" align="middle">
-          <Col xs={24} sm={24} md={20} lg={16} xl={14}>
-            <Space direction="vertical" size="large" style={{ width: '100%', textAlign: 'center' }}>
-              {/* Hero Section */}
-              <div>
-                <Text type="secondary" style={{ fontSize: 16, letterSpacing: 2 }}>
-                  WELCOME TO MY PORTFOLIO
-                </Text>
-              </div>
+        {/* Hero Section - Mobile-first */}
+        <Row 
+          justify="center" 
+          align="middle" 
+          style={{ 
+            minHeight: 'calc(100vh - 64px)',
+            paddingTop: '48px',
+            paddingBottom: '48px' 
+          }}
+        >
+          <Col xs={24} sm={24} md={20} lg={18} xl={16}>
+            <Space 
+              direction="vertical" 
+              size="large" 
+              style={{ width: '100%', textAlign: 'center' }}
+            >
+              <Text 
+                type="secondary" 
+                style={{ 
+                  fontSize: '14px',
+                  letterSpacing: '1px',
+                  textTransform: 'uppercase'
+                }}
+              >
+                Welcome to my portfolio
+              </Text>
               
               <Title 
                 level={1} 
                 style={{ 
-                  fontSize: 'clamp(2.5rem, 8vw, 4rem)',
+                  fontSize: 'clamp(2rem, 6vw, 3.5rem)',
                   marginBottom: 0,
-                  fontWeight: 700
+                  fontWeight: 700,
+                  lineHeight: 1.2
                 }}
               >
                 {data.about.name || 'Ahmad Ridho'}
@@ -37,9 +55,10 @@ const HomePage: React.FC = () => {
                 level={2} 
                 type="secondary" 
                 style={{ 
-                  fontSize: 'clamp(1.25rem, 4vw, 1.75rem)',
+                  fontSize: 'clamp(1.125rem, 3vw, 1.5rem)',
                   fontWeight: 400,
-                  marginTop: 0 
+                  marginTop: 0,
+                  marginBottom: '24px'
                 }}
               >
                 {data.about.title || 'Senior Backend Engineer'}
@@ -47,65 +66,74 @@ const HomePage: React.FC = () => {
               
               <Paragraph 
                 style={{ 
-                  fontSize: 18, 
-                  maxWidth: 600, 
-                  margin: '0 auto',
-                  lineHeight: 1.8
+                  fontSize: '16px', 
+                  maxWidth: '600px', 
+                  margin: '0 auto 32px',
+                  lineHeight: 1.7,
+                  color: 'rgba(0, 0, 0, 0.65)'
                 }}
               >
                 {data.about.summary || 'Building scalable systems and crafting elegant solutions. Passionate about distributed systems, microservices architecture, and creating impactful software.'}
               </Paragraph>
-              
-              {/* CTA Buttons */}
-              <Space size="large" wrap style={{ marginTop: 32 }}>
+
+              {/* CTA Buttons - Stack on mobile */}
+              <Space 
+                size="middle" 
+                wrap
+                style={{ justifyContent: 'center' }}
+              >
                 <Button 
                   type="primary" 
                   size="large"
+                  icon={<ArrowRightOutlined />}
                   onClick={() => history.push('/projects')}
-                  style={{ height: 48, paddingInline: 32 }}
+                  style={{ 
+                    minWidth: '160px',
+                    height: '48px'
+                  }}
                 >
-                  View My Work
+                  View Projects
                 </Button>
                 <Button 
                   size="large"
-                  icon={<ArrowRightOutlined />}
-                  onClick={() => history.push('/about')}
-                  style={{ height: 48, paddingInline: 32 }}
+                  onClick={() => history.push('/contact')}
+                  style={{ 
+                    minWidth: '160px',
+                    height: '48px'
+                  }}
                 >
-                  Learn More
+                  Get in Touch
                 </Button>
               </Space>
-              
-              <Divider style={{ margin: '48px 0' }}>
-                <Text type="secondary">Connect With Me</Text>
-              </Divider>
-              
+
+              <Divider style={{ margin: '48px 0 32px' }} />
+
               {/* Social Links */}
-              <Space size="large">
-                {data.contact.email && (
-                  <Button 
-                    type="text" 
-                    icon={<MailOutlined style={{ fontSize: 24 }} />}
-                    href={`mailto:${data.contact.email}`}
-                    style={{ color: 'inherit' }}
-                  />
-                )}
+              <Space size="large" wrap>
                 {data.contact.github && (
-                  <Button 
-                    type="text" 
-                    icon={<GithubOutlined style={{ fontSize: 24 }} />}
-                    href={data.contact.github.startsWith('http') ? data.contact.github : `https://github.com/${data.contact.github}`}
+                  <Button
+                    type="text"
+                    icon={<GithubOutlined style={{ fontSize: '20px' }} />}
+                    href={`https://github.com/${data.contact.github}`}
                     target="_blank"
-                    style={{ color: 'inherit' }}
+                    size="large"
                   />
                 )}
                 {data.contact.linkedin && (
-                  <Button 
-                    type="text" 
-                    icon={<LinkedinOutlined style={{ fontSize: 24 }} />}
-                    href={data.contact.linkedin.startsWith('http') ? data.contact.linkedin : `https://linkedin.com/in/${data.contact.linkedin}`}
+                  <Button
+                    type="text"
+                    icon={<LinkedinOutlined style={{ fontSize: '20px' }} />}
+                    href={`https://linkedin.com/in/${data.contact.linkedin}`}
                     target="_blank"
-                    style={{ color: 'inherit' }}
+                    size="large"
+                  />
+                )}
+                {data.contact.email && (
+                  <Button
+                    type="text"
+                    icon={<MailOutlined style={{ fontSize: '20px' }} />}
+                    href={`mailto:${data.contact.email}`}
+                    size="large"
                   />
                 )}
               </Space>

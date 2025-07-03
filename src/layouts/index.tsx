@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Outlet, useLocation, history } from 'umi';
-import { Layout, Menu, ConfigProvider, Typography, Space } from 'antd';
+import { Layout, Menu, ConfigProvider, Typography, Space, Drawer, Button } from 'antd';
+import { MenuOutlined } from '@ant-design/icons';
 import { theme } from '@/utils/theme';
 import type { MenuProps } from 'antd';
 import styles from './index.less';
@@ -9,50 +10,26 @@ const { Header, Content, Footer } = Layout;
 const { Text } = Typography;
 
 const BasicLayout: React.FC = () => {
-  const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const isScrolled = window.scrollY > 50;
-      setScrolled(isScrolled);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   const menuItems: MenuProps['items'] = [
-    {
-      key: '/',
-      label: 'home',
-    },
-    {
-      key: '/about',
-      label: 'about',
-    },
-    {
-      key: '/skills',
-      label: 'skills',
-    },
-    {
-      key: '/projects',
-      label: 'projects',
-    },
-    {
-      key: '/contact',
-      label: 'contact',
-    },
+    { key: '/', label: 'Home' },
+    { key: '/about', label: 'About' },
+    { key: '/skills', label: 'Skills' },
+    { key: '/projects', label: 'Projects' },
+    { key: '/contact', label: 'Contact' },
   ];
 
   const handleMenuClick: MenuProps['onClick'] = ({ key }) => {
     history.push(key);
+    setMobileMenuOpen(false);
   };
 
   return (
     <ConfigProvider theme={theme}>
       <Layout className={styles.layout}>
-        <Header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}>
+        <Header className={styles.header}>
           <div className={styles.headerContainer}>
             <Space 
               className={styles.logo}
@@ -62,43 +39,65 @@ const BasicLayout: React.FC = () => {
             >
               <img 
                 src="/favicon-32x32.png" 
-                alt="Duck Logo" 
-                style={{ 
-                  width: 32, 
-                  height: 32,
-                  marginTop: -2 
-                }}
+                alt="Logo" 
+                style={{ width: 32, height: 32 }}
               />
               <Typography.Title 
                 level={4} 
-                style={{ margin: 0, color: '#2d2d2d' }}
+                style={{ margin: 0 }}
+                className={styles.logoText}
               >
-                ridho's portfolio
+                Ahmad Ridho
               </Typography.Title>
             </Space>
+            
+            {/* Desktop Menu */}
             <Menu
               mode="horizontal"
               items={menuItems}
               selectedKeys={[location.pathname]}
               onClick={handleMenuClick}
-              style={{ 
-                flex: 1,
-                minWidth: 0,
-                background: 'transparent', 
-                border: 'none',
-                justifyContent: 'flex-end'
-              }}
+              className={styles.desktopMenu}
+            />
+            
+            {/* Mobile Menu Button */}
+            <Button
+              type="text"
+              icon={<MenuOutlined />}
+              onClick={() => setMobileMenuOpen(true)}
+              className={styles.mobileMenuButton}
+              size="large"
             />
           </div>
         </Header>
+        
+        {/* Mobile Menu Drawer */}
+        <Drawer
+          title="Menu"
+          placement="right"
+          onClose={() => setMobileMenuOpen(false)}
+          open={mobileMenuOpen}
+          width={280}
+          styles={{
+            body: { padding: 0 }
+          }}
+        >
+          <Menu
+            mode="vertical"
+            items={menuItems}
+            selectedKeys={[location.pathname]}
+            onClick={handleMenuClick}
+            style={{ border: 'none' }}
+          />
+        </Drawer>
         
         <Content className={styles.content}>
           <Outlet />
         </Content>
         
-        <Footer style={{ textAlign: 'center', padding: '24px 50px' }}>
+        <Footer className={styles.footer}>
           <Text type="secondary">
-            © 2024 Ahmad Ridho Portfolio. All rights reserved.
+            © 2024 Ahmad Ridho. All rights reserved.
           </Text>
         </Footer>
       </Layout>

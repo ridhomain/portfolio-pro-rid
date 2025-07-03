@@ -37,81 +37,98 @@ const ContactPage: React.FC = () => {
 
   if (loading) {
     return (
-      <section className="section" style={{ backgroundColor: '#f9fafb', minHeight: 'calc(100vh - 64px)' }}>
-        <div className="container">
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 400 }}>
-            <Spin size="large" />
-          </div>
-        </div>
-      </section>
+      <div style={{ 
+        minHeight: 'calc(100vh - 56px)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+        <Spin size="large" />
+      </div>
     );
   }
 
   return (
     <div style={{ 
-      flex: 1,
-      display: 'flex', 
+      minHeight: 'calc(100vh - 56px)',
+      display: 'flex',
       alignItems: 'center',
-      backgroundColor: '#f5f4f2' // Slightly darker than main background for contrast
+      justifyContent: 'center',
+      padding: '24px'
     }}>
-      <div className="container" style={{ width: '100%' }}>
-        <div style={{ textAlign: 'center', maxWidth: 600, margin: '0 auto' }}>
-          <Title level={2} style={{ marginBottom: 16 }}>Let's Connect</Title>
-          <Text type="secondary" style={{ fontSize: 16 }}>
-            Have a project in mind? Let's talk about it.
-          </Text>
-          
-          <Paragraph style={{ fontSize: 18, marginTop: 32, marginBottom: 48 }}>
-            {data.contact.message || "I'm always interested in new opportunities and collaborations. Feel free to reach out via email or WhatsApp."}
-          </Paragraph>
+      <div style={{ 
+        textAlign: 'center', 
+        maxWidth: 600,
+        width: '100%'
+      }}>
+        <Title level={2} style={{ marginBottom: 16 }}>
+          Let's Connect
+        </Title>
+        
+        <Text type="secondary" style={{ fontSize: 16 }}>
+          Have a project in mind? Let's talk about it.
+        </Text>
+        
+        <Paragraph style={{ 
+          fontSize: 18, 
+          marginTop: 32, 
+          marginBottom: 48,
+          color: 'rgba(0, 0, 0, 0.65)'
+        }}>
+          {data.contact.message || "I'm always interested in new opportunities and collaborations. Feel free to reach out via email or WhatsApp."}
+        </Paragraph>
 
-          <Space size="large" wrap style={{ justifyContent: 'center' }}>
-            {data.contact.email && (
-              <Button
-                type="primary"
-                size="large"
-                icon={getIcon('email')}
-                href={getHref('email', data.contact.email)}
-                style={{ height: 56, paddingInline: 32 }}
-              >
-                Email Me
-              </Button>
-            )}
+        <Space size="large" wrap style={{ justifyContent: 'center' }}>
+          {data.contact.email && (
+            <Button
+              type="primary"
+              size="large"
+              icon={getIcon('email')}
+              href={getHref('email', data.contact.email)}
+              style={{ 
+                height: 48,
+                paddingInline: 32,
+                minWidth: 160
+              }}
+            >
+              Email Me
+            </Button>
+          )}
 
-            {data.contact.whatsapp && (
-              <Button
-                size="large"
-                icon={getIcon('whatsapp')}
-                href={getHref('whatsapp', data.contact.whatsapp)}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ 
-                  height: 56, 
-                  paddingInline: 32, 
-                  color: '#25D366', 
-                  borderColor: '#25D366',
-                  backgroundColor: 'transparent'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#25D366';
-                  e.currentTarget.style.color = 'white';
-                  e.currentTarget.style.borderColor = '#25D366';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = 'transparent';
-                  e.currentTarget.style.color = '#25D366';
-                  e.currentTarget.style.borderColor = '#25D366';
-                }}
-              >
-                WhatsApp
-              </Button>
-            )}
-          </Space>
+          {data.contact.whatsapp && (
+            <Button
+              size="large"
+              icon={getIcon('whatsapp')}
+              href={getHref('whatsapp', data.contact.whatsapp)}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ 
+                height: 48,
+                paddingInline: 32,
+                minWidth: 160,
+                color: '#25D366',
+                borderColor: '#25D366',
+                backgroundColor: 'transparent'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#25D366';
+                e.currentTarget.style.color = 'white';
+                e.currentTarget.style.borderColor = '#25D366';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'transparent';
+                e.currentTarget.style.color = '#25D366';
+                e.currentTarget.style.borderColor = '#25D366';
+              }}
+            >
+              WhatsApp
+            </Button>
+          )}
+        </Space>
 
-          <Paragraph type="secondary" style={{ marginTop: 24 }}>
-            I typically respond within 24-48 hours
-          </Paragraph>
-        </div>
+        <Paragraph type="secondary" style={{ marginTop: 32 }}>
+          I typically respond within 24-48 hours
+        </Paragraph>
       </div>
     </div>
   );
