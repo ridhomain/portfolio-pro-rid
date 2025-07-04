@@ -1,4 +1,5 @@
-import React, { useMemo } from 'react';
+// src/pages/project/[id].tsx
+import React, { useMemo, useState, useEffect } from 'react';
 import { useParams, history } from 'umi';
 import { 
   Typography, 
@@ -12,7 +13,8 @@ import {
   Timeline,
   Alert,
   Breadcrumb,
-  Affix
+  Affix,
+  Anchor
 } from 'antd';
 import { 
   ArrowLeftOutlined, 
@@ -26,8 +28,28 @@ import {
   BulbOutlined,
   ThunderboltOutlined
 } from '@ant-design/icons';
+import './index.less';
 
 const { Title, Paragraph, Text } = Typography;
+const { Link } = Anchor;
+
+// Custom hook for responsive behavior
+const useResponsive = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkDevice = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkDevice();
+    window.addEventListener('resize', checkDevice);
+    
+    return () => window.removeEventListener('resize', checkDevice);
+  }, []);
+
+  return isMobile;
+};
 
 // Type definitions
 interface Feature {
@@ -527,6 +549,7 @@ const projectsFullData: Record<string, Project> = {
 const ProjectDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const project = useMemo(() => projectsFullData[id as keyof typeof projectsFullData], [id]);
+  const isMobile = useResponsive();
 
   if (!project) {
     return (
@@ -544,250 +567,279 @@ const ProjectDetailPage: React.FC = () => {
 
   return (
     <div className="section">
-      <div className="container" style={{ maxWidth: 1000 }}>
-        {/* Breadcrumb */}
-        <Breadcrumb style={{ marginBottom: 24 }}>
-          <Breadcrumb.Item>
-            <a onClick={() => history.push('/')}>Home</a>
-          </Breadcrumb.Item>
-          <Breadcrumb.Item>
-            <a onClick={() => history.push('/projects')}>Projects</a>
-          </Breadcrumb.Item>
-          <Breadcrumb.Item>{project.title}</Breadcrumb.Item>
-        </Breadcrumb>
-
-        {/* Project Header */}
-        <div style={{ marginBottom: 48 }}>
-          <Space direction="vertical" size={16} style={{ width: '100%' }}>
-            <div>
-              <Tag color="blue">{project.company}</Tag>
-              <Tag>{project.category}</Tag>
-            </div>
-            <Title level={1} style={{ margin: 0 }}>{project.title}</Title>
-            <Space size="large" wrap>
-              <Text><TeamOutlined /> {project.role}</Text>
-              <Text><CalendarOutlined /> {project.duration}</Text>
-            </Space>
-          </Space>
-        </div>
-
-        {/* Navigation Affix */}
-        <Affix offsetTop={80}>
-          <Card 
-            size="small" 
-            style={{ marginBottom: 24 }}
-            bodyStyle={{ padding: '12px 16px' }}
-          >
-            <Space size="middle" wrap>
-              <a href="#challenge">Challenge</a>
-              <a href="#solution">Solution</a>
-              <a href="#impact">Impact</a>
-              <a href="#tech">Technologies</a>
-            </Space>
-          </Card>
-        </Affix>
-
-        {/* Challenge Section */}
-        <Card id="challenge" style={{ marginBottom: 24 }}>
-          <Title level={3}>
-            <ThunderboltOutlined /> The Challenge
-          </Title>
-          <Paragraph style={{ whiteSpace: 'pre-line', marginBottom: 24 }}>
-            {project.overview.challenge}
-          </Paragraph>
-          
-          <Title level={4}>My Role</Title>
-          <Paragraph style={{ whiteSpace: 'pre-line' }}>
-            {project.overview.role}
-          </Paragraph>
-        </Card>
-
-        {/* Timeline */}
-        <Card style={{ marginBottom: 24 }}>
-          <Title level={3}>
-            <CalendarOutlined /> Project Timeline
-          </Title>
-          <Timeline mode="left">
-            {project.overview.timeline.map((phase, index) => (
-              <Timeline.Item 
-                key={index}
-                dot={<CheckCircleOutlined style={{ fontSize: '16px' }} />}
-                color="blue"
+      <div style={{ position: 'relative' }}>
+        {/* Side Navigation - Desktop Only */}
+        {!isMobile && (
+          <div className="desktop-side-nav" style={{
+            position: 'fixed',
+            right: 20,
+            top: '50%',
+            transform: 'translateY(-50%)',
+            zIndex: 100,
+            width: 160
+          }}>
+            <Card 
+              size="small" 
+              style={{ 
+                boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+                borderRadius: 8
+              }}
+              bodyStyle={{ padding: '16px 8px' }}
+            >
+              <Anchor 
+                affix={false}
+                offsetTop={80}
+                style={{ fontSize: 14 }}
               >
-                <Title level={5}>{phase.phase}</Title>
-                <Paragraph>{phase.description}</Paragraph>
-                <ul>
-                  {phase.highlights.map((highlight, idx) => (
-                    <li key={idx}>{highlight}</li>
-                  ))}
-                </ul>
-              </Timeline.Item>
-            ))}
-          </Timeline>
-        </Card>
-
-        {/* Solution Section */}
-        <div id="solution">
-          <Title level={2} style={{ marginBottom: 24 }}>
-            <BulbOutlined /> The Solution
-          </Title>
-          
-          {project.solution.keyFeatures.map((feature, index) => (
-            <Card key={index} style={{ marginBottom: 16 }}>
-              <Title level={4}>{feature.title}</Title>
-              <Paragraph>{feature.description}</Paragraph>
-              
-              {feature.impact && (
-                <Alert
-                  message="Impact"
-                  description={feature.impact}
-                  type="success"
-                  showIcon
-                  style={{ marginTop: 16 }}
-                />
-              )}
-              
-              {feature.features && (
-                <ul>
-                  {feature.features.map((item, idx) => (
-                    <li key={idx}>{item}</li>
-                  ))}
-                </ul>
-              )}
-              
-              {feature.services && (
-                <ul>
-                  {feature.services.map((service, idx) => (
-                    <li key={idx}>{service}</li>
-                  ))}
-                </ul>
-              )}
-              
-              {feature.benefits && (
-                <Space direction="vertical" size={8}>
-                  <Text strong>Benefits:</Text>
-                  <ul>
-                    {feature.benefits.map((benefit, idx) => (
-                      <li key={idx}>{benefit}</li>
-                    ))}
-                  </ul>
-                </Space>
-              )}
-              
-              {feature.components && (
-                <Space direction="vertical" size={8}>
-                  <Text strong>Components:</Text>
-                  <ul>
-                    {feature.components.map((component, idx) => (
-                      <li key={idx}>{component}</li>
-                    ))}
-                  </ul>
-                </Space>
-              )}
-              
-              {feature.capabilities && (
-                <Space direction="vertical" size={8}>
-                  <Text strong>Capabilities:</Text>
-                  <ul>
-                    {feature.capabilities.map((capability, idx) => (
-                      <li key={idx}>{capability}</li>
-                    ))}
-                  </ul>
-                </Space>
-              )}
-              
-              {feature.changes && (
-                <ul>
-                  {feature.changes.map((change, idx) => (
-                    <li key={idx}>{change}</li>
-                  ))}
-                </ul>
-              )}
+                <Link href="#challenge" title="Challenge" />
+                <Link href="#solution" title="Solution" />
+                <Link href="#impact" title="Impact" />
+                <Link href="#tech" title="Technologies" />
+              </Anchor>
             </Card>
-          ))}
-        </div>
+          </div>
+        )}
 
-        {/* Technologies Section */}
-        <Card id="tech" style={{ marginBottom: 24 }}>
-          <Title level={3}>
-            <ToolOutlined /> Technologies & Tools
-          </Title>
-          <Row gutter={[16, 16]}>
-            {Object.entries(project.solution.techStack).map(([category, items]) => (
-              <Col xs={24} sm={12} key={category}>
-                <Title level={5} style={{ textTransform: 'capitalize' }}>
-                  {category}
-                </Title>
-                <Space wrap size={[8, 8]}>
-                  {Array.isArray(items) ? (
-                    items.map((item) => <Tag key={item}>{item}</Tag>)
-                  ) : (
-                    <Text>{items}</Text>
-                  )}
-                </Space>
-              </Col>
-            ))}
-          </Row>
-        </Card>
-
-        {/* Impact Section */}
-        <div id="impact">
-          <Title level={2} style={{ marginBottom: 24 }}>
-            <TrophyOutlined /> Impact & Results
-          </Title>
-          
-          <Row gutter={[16, 16]}>
-            {Object.entries(project.impact).map(([category, items]) => (
-              <Col xs={24} md={8} key={category}>
-                <Card>
-                  <Title level={4} style={{ textTransform: 'capitalize' }}>
-                    {category} Impact
-                  </Title>
-                  <ul style={{ paddingLeft: 20 }}>
-                    {items.map((item, idx) => (
-                      <li key={idx}>{item}</li>
-                    ))}
-                  </ul>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-        </div>
-
-        {/* Lessons Learned */}
-        <Card style={{ marginTop: 24, marginBottom: 48 }}>
-          <Title level={3}>
-            <BulbOutlined /> Key Takeaways
-          </Title>
-          <Paragraph style={{ fontSize: 16, lineHeight: 1.8 }}>
-            {project.lessons}
-          </Paragraph>
-        </Card>
-
-        {/* Navigation */}
-        <Row gutter={16} style={{ marginBottom: 48 }}>
-          <Col span={12}>
+        <div className="container" style={{ maxWidth: 1000 }}>
+          {/* Navigation - Responsive */}
+          <div className="mobile-back-nav">
             <Button 
-              block 
-              size="large" 
-              icon={<ArrowLeftOutlined />}
+              icon={<ArrowLeftOutlined />} 
               onClick={() => history.push('/projects')}
+              type="text"
+              style={{ padding: '4px 8px' }}
             >
               Back to Projects
             </Button>
-          </Col>
-          <Col span={12}>
-            <Button 
-              type="primary" 
-              block 
-              size="large"
-              icon={<RocketOutlined />}
-              onClick={() => history.push('/contact')}
-            >
-              Get In Touch
-            </Button>
-          </Col>
-        </Row>
+          </div>
+
+          <Breadcrumb className="desktop-breadcrumb" style={{ marginBottom: 24 }}>
+            <Breadcrumb.Item>
+              <a onClick={() => history.push('/')}>Home</a>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>
+              <a onClick={() => history.push('/projects')}>Projects</a>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>{project.title}</Breadcrumb.Item>
+          </Breadcrumb>
+
+          {/* Project Header */}
+          <div style={{ marginBottom: 48 }}>
+            <Space direction="vertical" size={16} style={{ width: '100%' }}>
+              <div>
+                <Tag color="blue">{project.company}</Tag>
+                <Tag>{project.category}</Tag>
+              </div>
+              <Title level={1} style={{ margin: 0 }}>{project.title}</Title>
+              <Space size="large" wrap>
+                <Text><TeamOutlined /> {project.role}</Text>
+                <Text><CalendarOutlined /> {project.duration}</Text>
+              </Space>
+            </Space>
+          </div>
+
+          {/* Challenge Section */}
+          <Card id="challenge" style={{ marginBottom: 24 }}>
+            <Title level={3}>
+              <ThunderboltOutlined /> The Challenge
+            </Title>
+            <Paragraph style={{ whiteSpace: 'pre-line', marginBottom: 24 }}>
+              {project.overview.challenge}
+            </Paragraph>
+            
+            <Title level={4}>My Role</Title>
+            <Paragraph style={{ whiteSpace: 'pre-line' }}>
+              {project.overview.role}
+            </Paragraph>
+          </Card>
+
+          {/* Timeline */}
+          <Card style={{ marginBottom: 24 }}>
+            <Title level={3}>
+              <CalendarOutlined /> Project Timeline
+            </Title>
+            <Timeline mode="left">
+              {project.overview.timeline.map((phase, index) => (
+                <Timeline.Item 
+                  key={index}
+                  dot={<CheckCircleOutlined style={{ fontSize: '16px' }} />}
+                  color="blue"
+                >
+                  <Title level={5}>{phase.phase}</Title>
+                  <Paragraph>{phase.description}</Paragraph>
+                  <ul>
+                    {phase.highlights.map((highlight, idx) => (
+                      <li key={idx}>{highlight}</li>
+                    ))}
+                  </ul>
+                </Timeline.Item>
+              ))}
+            </Timeline>
+          </Card>
+
+          {/* Solution Section */}
+          <div id="solution">
+            <Title level={2} style={{ marginBottom: 24 }}>
+              <BulbOutlined /> The Solution
+            </Title>
+            
+            {project.solution.keyFeatures.map((feature, index) => (
+              <Card key={index} style={{ marginBottom: 16 }}>
+                <Title level={4}>{feature.title}</Title>
+                <Paragraph>{feature.description}</Paragraph>
+                
+                {feature.impact && (
+                  <Alert
+                    message="Impact"
+                    description={feature.impact}
+                    type="success"
+                    showIcon
+                    style={{ marginTop: 16 }}
+                  />
+                )}
+                
+                {feature.features && (
+                  <ul>
+                    {feature.features.map((item, idx) => (
+                      <li key={idx}>{item}</li>
+                    ))}
+                  </ul>
+                )}
+                
+                {feature.services && (
+                  <ul>
+                    {feature.services.map((service, idx) => (
+                      <li key={idx}>{service}</li>
+                    ))}
+                  </ul>
+                )}
+                
+                {feature.benefits && (
+                  <Space direction="vertical" size={8}>
+                    <Text strong>Benefits:</Text>
+                    <ul>
+                      {feature.benefits.map((benefit, idx) => (
+                        <li key={idx}>{benefit}</li>
+                      ))}
+                    </ul>
+                  </Space>
+                )}
+                
+                {feature.components && (
+                  <Space direction="vertical" size={8}>
+                    <Text strong>Components:</Text>
+                    <ul>
+                      {feature.components.map((component, idx) => (
+                        <li key={idx}>{component}</li>
+                      ))}
+                    </ul>
+                  </Space>
+                )}
+                
+                {feature.capabilities && (
+                  <Space direction="vertical" size={8}>
+                    <Text strong>Capabilities:</Text>
+                    <ul>
+                      {feature.capabilities.map((capability, idx) => (
+                        <li key={idx}>{capability}</li>
+                      ))}
+                    </ul>
+                  </Space>
+                )}
+                
+                {feature.changes && (
+                  <ul>
+                    {feature.changes.map((change, idx) => (
+                      <li key={idx}>{change}</li>
+                    ))}
+                  </ul>
+                )}
+              </Card>
+            ))}
+          </div>
+
+          {/* Technologies Section */}
+          <Card id="tech" style={{ marginBottom: 24 }}>
+            <Title level={3}>
+              <ToolOutlined /> Technologies & Tools
+            </Title>
+            <Row gutter={[16, 16]}>
+              {Object.entries(project.solution.techStack).map(([category, items]) => (
+                <Col xs={24} sm={12} key={category}>
+                  <Title level={5} style={{ textTransform: 'capitalize' }}>
+                    {category}
+                  </Title>
+                  <Space wrap size={[8, 8]}>
+                    {Array.isArray(items) ? (
+                      items.map((item) => <Tag key={item}>{item}</Tag>)
+                    ) : (
+                      <Text>{items}</Text>
+                    )}
+                  </Space>
+                </Col>
+              ))}
+            </Row>
+          </Card>
+
+          {/* Impact Section */}
+          <div id="impact">
+            <Title level={2} style={{ marginBottom: 24 }}>
+              <TrophyOutlined /> Impact & Results
+            </Title>
+            
+            <Row gutter={[16, 16]}>
+              {Object.entries(project.impact).map(([category, items]) => (
+                <Col xs={24} md={8} key={category}>
+                  <Card>
+                    <Title level={4} style={{ textTransform: 'capitalize' }}>
+                      {category} Impact
+                    </Title>
+                    <ul style={{ paddingLeft: 20 }}>
+                      {items.map((item, idx) => (
+                        <li key={idx}>{item}</li>
+                      ))}
+                    </ul>
+                  </Card>
+                </Col>
+              ))}
+            </Row>
+          </div>
+
+          {/* Lessons Learned */}
+          <Card style={{ marginTop: 24, marginBottom: 48 }}>
+            <Title level={3}>
+              <BulbOutlined /> Key Takeaways
+            </Title>
+            <Paragraph style={{ fontSize: 16, lineHeight: 1.8 }}>
+              {project.lessons}
+            </Paragraph>
+          </Card>
+
+          {/* Navigation */}
+          <Row gutter={16} style={{ marginBottom: 48 }}>
+            <Col span={12}>
+              <Button 
+                block 
+                size="large" 
+                icon={<ArrowLeftOutlined />}
+                onClick={() => history.push('/projects')}
+              >
+                Back to Projects
+              </Button>
+            </Col>
+            <Col span={12}>
+              <Button 
+                type="primary" 
+                block 
+                size="large"
+                icon={<RocketOutlined />}
+                onClick={() => history.push('/contact')}
+              >
+                Get In Touch
+              </Button>
+            </Col>
+          </Row>
+        </div>
       </div>
     </div>
   );

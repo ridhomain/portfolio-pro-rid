@@ -1,8 +1,10 @@
+// src/pages/index.tsx
 import React from 'react';
-import { Button, Space, Typography, Row, Col, Divider, Spin } from 'antd';
+import { Button, Space, Typography, Row, Col, Divider } from 'antd';
 import { ArrowRightOutlined, GithubOutlined, LinkedinOutlined, MailOutlined } from '@ant-design/icons';
 import { history } from 'umi';
 import { usePortfolio } from '@/hooks/usePortfolio';
+import Loading from '@/components/Loading';
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -10,16 +12,7 @@ const HomePage: React.FC = () => {
   const { data, loading } = usePortfolio();
   
   if (loading) {
-    return (
-      <div style={{ 
-        flex: 1,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}>
-        <Spin size="large" />
-      </div>
-    );
+    return <Loading tip="Loading portfolio..." />;
   }
   
   return (

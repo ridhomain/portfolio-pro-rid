@@ -1,11 +1,13 @@
+// src/pages/contact/index.tsx
 import React from 'react';
-import { Typography, Space, Button, Spin } from 'antd';
+import { Typography, Space, Button } from 'antd';
 import { 
   MailOutlined, 
   WhatsAppOutlined,
   MessageOutlined
 } from '@ant-design/icons';
 import { usePortfolio } from '@/hooks/usePortfolio';
+import Loading from '@/components/Loading';
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -36,16 +38,7 @@ const ContactPage: React.FC = () => {
   };
 
   if (loading) {
-    return (
-      <div style={{ 
-        minHeight: 'calc(100vh - 56px)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}>
-        <Spin size="large" />
-      </div>
-    );
+    return <Loading tip="Loading contact information..." />;
   }
 
   return (
@@ -78,56 +71,39 @@ const ContactPage: React.FC = () => {
           {data.contact.message || "I'm always interested in new opportunities and collaborations. Feel free to reach out via email or WhatsApp."}
         </Paragraph>
 
-        <Space size="large" wrap style={{ justifyContent: 'center' }}>
-          {data.contact.email && (
-            <Button
-              type="primary"
-              size="large"
-              icon={getIcon('email')}
-              href={getHref('email', data.contact.email)}
-              style={{ 
-                height: 48,
-                paddingInline: 32,
-                minWidth: 160
-              }}
-            >
-              Email Me
-            </Button>
-          )}
-
-          {data.contact.whatsapp && (
-            <Button
-              size="large"
-              icon={getIcon('whatsapp')}
-              href={getHref('whatsapp', data.contact.whatsapp)}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ 
-                height: 48,
-                paddingInline: 32,
-                minWidth: 160,
-                color: '#25D366',
-                borderColor: '#25D366',
-                backgroundColor: 'transparent'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#25D366';
-                e.currentTarget.style.color = 'white';
-                e.currentTarget.style.borderColor = '#25D366';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'transparent';
-                e.currentTarget.style.color = '#25D366';
-                e.currentTarget.style.borderColor = '#25D366';
-              }}
-            >
-              WhatsApp
-            </Button>
-          )}
+        <Space direction="vertical" size="large" style={{ width: '100%' }}>
+          {Object.entries(data.contact).map(([platform, value]) => {
+            if (platform === 'message' || !value) return null;
+            
+            return (
+              <Button
+                key={platform}
+                type="primary"
+                size="large"
+                icon={getIcon(platform)}
+                href={getHref(platform, value)}
+                target={platform !== 'email' ? '_blank' : undefined}
+                block
+                style={{ 
+                  maxWidth: 300, 
+                  margin: '0 auto',
+                  height: 48,
+                  fontSize: 16
+                }}
+              >
+                {platform === 'email' ? value : `Connect on ${platform}`}
+              </Button>
+            );
+          })}
         </Space>
 
-        <Paragraph type="secondary" style={{ marginTop: 32 }}>
-          I typically respond within 24-48 hours
+        {/* Additional message */}
+        <Paragraph style={{ 
+          marginTop: 48, 
+          fontSize: 14, 
+          color: 'rgba(0, 0, 0, 0.45)' 
+        }}>
+          I typically respond within 24-48 hours.
         </Paragraph>
       </div>
     </div>

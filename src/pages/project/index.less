@@ -1,0 +1,47 @@
+/* src/pages/project/detail.less */
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  /* CTA Card on mobile */
+  .project-cta-card {
+    padding: 16px !important;
+  }
+  
+  .project-cta-card .ant-card-body {
+    padding: 16px !important;
+  }
+  
+  .project-cta-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .project-cta-buttons .ant-btn {
+    width: 100%;
+    margin: 8px 0 !important;
+  }
+
+  /* Mobile navigation */
+  .mobile-back-nav {
+    display: block;
+    margin-bottom: 16px;
+  }
+  
+  .desktop-breadcrumb {
+    display: none;
+  }
+  
+  .desktop-side-nav {
+    display: none !important;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-back-nav {
+    display: none;
+  }
+  
+  .desktop-breadcrumb {
+    display: block;
+  }
+}

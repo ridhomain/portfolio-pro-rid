@@ -1,11 +1,19 @@
+// src/pages/projects/index.tsx
 import React, { useState } from 'react';
-import { Typography, Card, Tag, Row, Col, Button, Space, Segmented, Badge } from 'antd';
-import { EyeOutlined, RocketOutlined, CodeOutlined, TeamOutlined, CalendarOutlined } from '@ant-design/icons';
+import { Card, Row, Col, Tag, Button, Typography, Space, Badge, Segmented } from 'antd';
+import { 
+  EyeOutlined, 
+  CodeOutlined, 
+  TeamOutlined, 
+  CalendarOutlined,
+  RocketOutlined
+} from '@ant-design/icons';
 import { history } from 'umi';
+import Loading from '@/components/Loading';
 
 const { Title, Paragraph, Text } = Typography;
 
-// Project data based on our content
+// Projects data based on our content
 const projectsData = [
   {
     id: 'whatsapp-platform',
@@ -105,19 +113,12 @@ const projectsData = [
   }
 ];
 
-const categories = [
-  { label: 'All Projects', value: 'all' },
-  { label: 'Architecture', value: 'architecture' },
-  { label: 'Enterprise', value: 'enterprise' },
-  { label: 'Dashboard', value: 'dashboard' }
-];
-
 const ProjectsPage: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [loading] = useState(false); // Projects are hardcoded for now
 
-  const filteredProjects = projectsData.filter(project => 
-    selectedCategory === 'all' || project.category === selectedCategory
-  );
+  if (loading) {
+    return <Loading tip="Loading projects..." />;
+  }
 
   return (
     <div className="section">
@@ -131,30 +132,32 @@ const ProjectsPage: React.FC = () => {
             A collection of projects showcasing my expertise in backend architecture, 
             system design, and full-stack development
           </Paragraph>
-          
-          {/* Category Filter */}
-          <Segmented
-            options={categories}
-            value={selectedCategory}
-            onChange={setSelectedCategory}
-            size="large"
-          />
         </div>
 
         {/* Projects Grid */}
         <Row gutter={[24, 24]}>
-          {filteredProjects.map((project) => (
+          {projectsData.map((project) => (
             <Col xs={24} lg={12} key={project.id}>
               <Card
                 hoverable
-                style={{ height: '100%', position: 'relative' }}
-                bodyStyle={{ padding: 24 }}
+                style={{ 
+                  height: '100%',
+                  borderRadius: '12px',
+                  overflow: 'hidden',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.05)'
+                }}
+                bodyStyle={{ 
+                  padding: '24px',
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column'
+                }}
               >
                 {project.featured && (
-                  <Badge.Ribbon text="Featured" color="blue">
-                    <div style={{ padding: 24 }}>
-                      {/* Project Header */}
-                      <Space direction="vertical" size={16} style={{ width: '100%' }}>
+                  <Badge.Ribbon text="Featured" color="red">
+                    <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                      <Space direction="vertical" size={16} style={{ flex: 1 }}>
+                        {/* Header */}
                         <div>
                           <Text type="secondary" style={{ fontSize: 12 }}>
                             {project.company}
@@ -177,7 +180,7 @@ const ProjectsPage: React.FC = () => {
                           {project.summary}
                         </Paragraph>
 
-                        {/* Key Impact */}
+                        {/* Impact */}
                         <div>
                           <Text strong style={{ display: 'block', marginBottom: 8 }}>
                             Key Impact:
@@ -297,13 +300,6 @@ const ProjectsPage: React.FC = () => {
             I'm always open to discussing new opportunities and interesting projects.
           </Paragraph>
           <Space size="middle">
-            <Button 
-              size="large" 
-              icon={<CodeOutlined />}
-              onClick={() => window.open('https://github.com/yourusername', '_blank')}
-            >
-              View GitHub
-            </Button>
             <Button 
               type="primary" 
               size="large"

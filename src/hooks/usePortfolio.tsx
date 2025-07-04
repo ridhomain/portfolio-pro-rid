@@ -1,3 +1,4 @@
+// src/hooks/usePortfolio.tsx
 import { useState, useCallback, useEffect } from 'react';
 import googleService from '@/services/google';
 
@@ -8,14 +9,21 @@ interface PortfolioData {
   contact: Record<string, string>;
 }
 
+// Default initial data to prevent glitching
+const initialData: PortfolioData = {
+  about: {
+    name: 'Ahmad Ridho',
+    title: 'Senior Backend Engineer',
+    summary: 'Building scalable systems and crafting elegant solutions.',
+  },
+  skills: {},
+  projects: [],
+  contact: {},
+};
+
 export const usePortfolio = () => {
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<PortfolioData>({
-    about: {},
-    skills: {},
-    projects: [],
-    contact: {},
-  });
+  const [loading, setLoading] = useState(true); // Start with true
+  const [data, setData] = useState<PortfolioData>(initialData);
   const [error, setError] = useState<string | null>(null);
 
   const fetchPortfolioData = useCallback(async () => {
@@ -31,7 +39,7 @@ export const usePortfolio = () => {
       ]);
 
       setData({
-        about,
+        about: { ...initialData.about, ...about },
         skills,
         projects,
         contact,
@@ -39,6 +47,7 @@ export const usePortfolio = () => {
     } catch (err) {
       console.error('Error fetching portfolio data:', err);
       setError('Failed to load portfolio data');
+      // Keep initial data on error
     } finally {
       setLoading(false);
     }

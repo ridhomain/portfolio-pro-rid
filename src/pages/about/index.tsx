@@ -1,5 +1,6 @@
+// src/pages/about/index.tsx
 import React from 'react';
-import { Typography, Card, Row, Col, Timeline, Space, Statistic, Divider, Avatar, Tag, Badge, Spin } from 'antd';
+import { Typography, Card, Row, Col, Timeline, Space, Statistic, Divider, Avatar, Tag, Badge } from 'antd';
 import { 
   UserOutlined, 
   CodeOutlined, 
@@ -13,6 +14,7 @@ import {
   ToolOutlined
 } from '@ant-design/icons';
 import { usePortfolio } from '@/hooks/usePortfolio';
+import Loading from '@/components/Loading';
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -155,23 +157,13 @@ const AboutPage: React.FC = () => {
   };
 
   if (loading) {
-    return (
-      <div className="section">
-        <div className="container">
-          <Row justify="center" style={{ minHeight: 400 }}>
-            <Col>
-              <Spin size="large" />
-            </Col>
-          </Row>
-        </div>
-      </div>
-    );
+    return <Loading tip="Loading about information..." />;
   }
 
   return (
     <div className="section" style={{ paddingTop: '48px', paddingBottom: '48px' }}>
       <div className="container">
-        {/* Header Section */}
+        {/* Header */}
         <Row justify="center" style={{ marginBottom: '48px' }}>
           <Col xs={24} sm={20} md={16} lg={12}>
             <Space direction="vertical" size="large" style={{ width: '100%', textAlign: 'center' }}>
@@ -181,12 +173,11 @@ const AboutPage: React.FC = () => {
                 style={{ 
                   margin: '0 auto', 
                   display: 'block',
-                  backgroundColor: '#1890ff',
-                  fontSize: '48px'
+                  backgroundColor: '#1890ff'
                 }}
               />
               <div>
-                <Title level={1} style={{ marginBottom: '8px', fontSize: 'clamp(2rem, 5vw, 3rem)' }}>
+                <Title level={1} style={{ marginBottom: '8px' }}>
                   {data.about.name || 'Ahmad Ridho'}
                 </Title>
                 <Title level={3} type="secondary" style={{ marginTop: 0, fontWeight: 400 }}>
@@ -197,7 +188,7 @@ const AboutPage: React.FC = () => {
           </Col>
         </Row>
 
-        {/* Stats Section */}
+        {/* Stats Grid */}
         <Row gutter={[24, 24]} style={{ marginBottom: '48px' }}>
           {stats.map((stat, index) => (
             <Col xs={12} sm={12} md={6} key={index}>
@@ -212,10 +203,10 @@ const AboutPage: React.FC = () => {
                 bodyStyle={{ padding: '24px 16px' }}
               >
                 <Space direction="vertical" size="small" style={{ width: '100%' }}>
-                  <div style={{ fontSize: '28px', color: stat.color }}>
+                  <div style={{ fontSize: '32px', color: stat.color }}>
                     {stat.icon}
                   </div>
-                  {typeof stat.value === 'string' && stat.value.includes(',') ? (
+                  {typeof stat.value === 'string' && (stat.value.includes(',') || stat.value.includes('+')) ? (
                     <Text strong style={{ fontSize: '14px', display: 'block' }}>
                       {stat.value}
                     </Text>
@@ -262,7 +253,7 @@ const AboutPage: React.FC = () => {
                   </Paragraph>
                   
                   <Paragraph style={{ fontSize: '16px', lineHeight: 1.7 }}>
-                    I believe the best engineering happens within constraints, not despite them. Where others see limitations, I see creative opportunities. My decisions aren\'t driven by what\'s trending on tech Twitter, but by what actually moves the needle - proven tools, pragmatic architectures, and solutions that engineers can maintain at 3 AM without cursing my name.
+                    I believe the best engineering happens within constraints, not despite them. Where others see limitations, I see creative opportunities. My decisions aren't driven by what's trending on tech Twitter, but by what actually moves the needle - proven tools, pragmatic architectures, and solutions that engineers can maintain at 3 AM without cursing my name.
                   </Paragraph>
 
                   <Paragraph style={{ fontSize: '16px', lineHeight: 1.7 }}>
@@ -304,7 +295,7 @@ const AboutPage: React.FC = () => {
             </Card>
           </Col>
 
-          {/* Technical Stack */}
+          {/* Technical Skills */}
           <Col xs={24} lg={12}>
             <Card 
               title={
@@ -312,7 +303,7 @@ const AboutPage: React.FC = () => {
                   <ToolOutlined style={{ color: '#52c41a' }} />
                   <span>Technical Expertise</span>
                 </Space>
-              } 
+              }
               style={{ height: '100%', borderRadius: '12px' }}
               headStyle={{ borderBottom: '2px solid #f0f0f0' }}
             >
