@@ -12,7 +12,7 @@ export default defineConfig({
     { exact: true, path: '/', component: '@/pages/index' },
     { path: '/about', component: '@/pages/about' },
     { path: '/projects', component: '@/pages/projects' },
-    // { path: '/project/:id', component: '@/pages/project/[id]' },
+    { path: '/project/:id', component: '@/pages/project/[id]' },
     { path: '/contact', component: '@/pages/contact' },
     { path: '*', component: '@/pages/404' },
   ],
