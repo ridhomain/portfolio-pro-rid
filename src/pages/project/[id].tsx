@@ -13,7 +13,7 @@ import {
   Timeline,
   Alert,
   Breadcrumb,
-  Affix,
+  List,
   Anchor
 } from 'antd';
 import { 
@@ -766,16 +766,18 @@ const ProjectDetailPage: React.FC = () => {
             <Row gutter={[16, 16]}>
               {Object.entries(project.solution.techStack).map(([category, items]) => (
                 <Col xs={24} sm={12} key={category}>
-                  <Title level={5} style={{ textTransform: 'capitalize' }}>
+                  <Title level={5} style={{ textTransform: 'capitalize', marginBottom: 8 }}>
                     {category}
                   </Title>
-                  <Space wrap size={[8, 8]}>
-                    {Array.isArray(items) ? (
-                      items.map((item) => <Tag key={item}>{item}</Tag>)
-                    ) : (
-                      <Text>{items}</Text>
+                  <List
+                    size="small"
+                    dataSource={Array.isArray(items) ? items : [items]}
+                    renderItem={(item) => (
+                      <List.Item style={{ padding: '4px 0', border: 'none' }}>
+                        {item}
+                      </List.Item>
                     )}
-                  </Space>
+                  />
                 </Col>
               ))}
             </Row>
@@ -818,24 +820,48 @@ const ProjectDetailPage: React.FC = () => {
           {/* Navigation */}
           <Row gutter={16} style={{ marginBottom: 48 }}>
             <Col span={12}>
-              <Button 
-                block 
-                size="large" 
+              <Button
                 icon={<ArrowLeftOutlined />}
                 onClick={() => history.push('/projects')}
+                type="default"
+                block
+                size="large"
+                style={{
+                  height: 48,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  whiteSpace: 'normal', // allow wrapping
+                  textAlign: 'center',
+                  padding: '8px 12px',
+                }}
               >
-                Back to Projects
+                <Text style={{ wordBreak: 'break-word', marginLeft: 8 }}>
+                  Back to Projects
+                </Text>
               </Button>
             </Col>
+
             <Col span={12}>
-              <Button 
-                type="primary" 
-                block 
-                size="large"
+              <Button
+                type="primary"
                 icon={<RocketOutlined />}
+                block
+                size="large"
                 onClick={() => history.push('/contact')}
+                style={{
+                  height: 48,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  whiteSpace: 'normal', // allow wrapping
+                  textAlign: 'center',
+                  padding: '8px 12px',
+                }}
               >
-                Get In Touch
+                <Text style={{ wordBreak: 'break-word', color: '#fff', marginLeft: 8 }}>
+                  Get In Touch
+                </Text>
               </Button>
             </Col>
           </Row>

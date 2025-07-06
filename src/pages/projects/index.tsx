@@ -1,10 +1,9 @@
 // src/pages/projects/index.tsx
 import React, { useState } from 'react';
-import { Card, Row, Col, Tag, Button, Typography, Space, Badge, Segmented } from 'antd';
-import { 
-  EyeOutlined, 
-  CodeOutlined, 
-  TeamOutlined, 
+import { Card, Row, Col, Tag, Button, Typography, Space, Badge } from 'antd';
+import {
+  EyeOutlined,
+  TeamOutlined,
   CalendarOutlined,
   RocketOutlined
 } from '@ant-design/icons';
@@ -13,7 +12,6 @@ import Loading from '@/components/Loading';
 
 const { Title, Paragraph, Text } = Typography;
 
-// Projects data based on our content
 const projectsData = [
   {
     id: 'whatsapp-platform',
@@ -93,7 +91,7 @@ const projectsData = [
     company: 'Bank Negara Indonesia',
     role: 'Full-Stack Developer',
     duration: '3 months',
-    featured: false,
+    featured: true,
     category: 'dashboard',
     summary: 'Automated performance monitoring system for all BNI branches nationwide',
     challenge: 'Manual score calculations with no centralized visibility for management',
@@ -114,16 +112,87 @@ const projectsData = [
 ];
 
 const ProjectsPage: React.FC = () => {
-  const [loading] = useState(false); // Projects are hardcoded for now
+  const [loading] = useState(false);
 
   if (loading) {
     return <Loading tip="Loading projects..." />;
   }
 
+  const renderCard = (project: typeof projectsData[0]) => (
+  <Card
+    key={project.id}
+    hoverable
+    style={{
+      borderRadius: 12,
+      boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+      display: 'flex',
+      flexDirection: 'column',
+    }}
+  >
+    <div style={{ display: 'flex', flexDirection: 'column', flex: 1, height: '100%' }}>
+      {/* Top Content */}
+      <div style={{ flex: 1 }}>
+        <Space direction="vertical" size={16} style={{ display: 'flex' }}>
+          {/* Header */}
+          <div>
+            <Text strong style={{ fontSize: 18, color: '#1890ff', display: 'block', marginBottom: 8 }}>
+              {project.company}
+            </Text>
+            <Title level={4} style={{ margin: '8px 0' }}>{project.title}</Title>
+            <Space size="middle" wrap>
+              <Text type="secondary"><TeamOutlined /> {project.role}</Text>
+              <Text type="secondary"><CalendarOutlined /> {project.duration}</Text>
+            </Space>
+          </div>
+
+          {/* Summary */}
+          <Paragraph style={{ marginBottom: 0 }}>{project.summary}</Paragraph>
+
+          {/* Key Impact */}
+          <div>
+            <Text strong style={{ display: 'block', marginBottom: 8 }}>Key Impact:</Text>
+            <ul style={{ margin: 0, paddingLeft: 20 }}>
+              {project.impact.slice(0, 2).map((item, index) => (
+                <li key={index}><Text type="secondary">{item}</Text></li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Tech Stack */}
+          <div>
+            <Text strong style={{ display: 'block', marginBottom: 8 }}>Technologies:</Text>
+            <Space wrap size={[8, 8]}>
+              {project.techStack.slice(0, 6).map((tech) => (
+                <Tag key={tech}>{tech}</Tag>
+              ))}
+              {project.techStack.length > 6 && (
+                <Tag>+{project.techStack.length - 6} more</Tag>
+              )}
+            </Space>
+          </div>
+        </Space>
+      </div>
+
+      {/* Bottom Button */}
+      <div style={{ marginTop: 24 }}>
+        <Button
+          type="primary"
+          icon={<EyeOutlined />}
+          onClick={() => history.push(`/project/${project.id}`)}
+          size="large"
+          block
+        >
+          View Project Details
+        </Button>
+      </div>
+    </div>
+  </Card>
+);
+
+
   return (
     <div className="section">
       <div className="container" style={{ maxWidth: 1200 }}>
-        {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: 48 }}>
           <Title level={2} style={{ marginBottom: 16 }}>
             Featured Projects
@@ -134,164 +203,18 @@ const ProjectsPage: React.FC = () => {
           </Paragraph>
         </div>
 
-        {/* Projects Grid */}
         <Row gutter={[24, 24]}>
-          {projectsData.map((project) => (
+          {projectsData.map(project => (
             <Col xs={24} lg={12} key={project.id}>
-              <Card
-                hoverable
-                style={{ 
-                  height: '100%',
-                  borderRadius: '12px',
-                  overflow: 'hidden',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.05)'
-                }}
-                bodyStyle={{ 
-                  padding: '24px',
-                  height: '100%',
-                  display: 'flex',
-                  flexDirection: 'column'
-                }}
-              >
-                {project.featured && (
-                  <Badge.Ribbon text="Featured" color="red">
-                    <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-                      <Space direction="vertical" size={16} style={{ flex: 1 }}>
-                        {/* Header */}
-                        <div>
-                          <Text type="secondary" style={{ fontSize: 12 }}>
-                            {project.company}
-                          </Text>
-                          <Title level={4} style={{ margin: '8px 0' }}>
-                            {project.title}
-                          </Title>
-                          <Space size="middle" wrap>
-                            <Text type="secondary">
-                              <TeamOutlined /> {project.role}
-                            </Text>
-                            <Text type="secondary">
-                              <CalendarOutlined /> {project.duration}
-                            </Text>
-                          </Space>
-                        </div>
-
-                        {/* Summary */}
-                        <Paragraph style={{ marginBottom: 0 }}>
-                          {project.summary}
-                        </Paragraph>
-
-                        {/* Impact */}
-                        <div>
-                          <Text strong style={{ display: 'block', marginBottom: 8 }}>
-                            Key Impact:
-                          </Text>
-                          <ul style={{ margin: 0, paddingLeft: 20 }}>
-                            {project.impact.slice(0, 2).map((item, index) => (
-                              <li key={index}>
-                                <Text type="secondary">{item}</Text>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-
-                        {/* Tech Stack */}
-                        <div>
-                          <Text strong style={{ display: 'block', marginBottom: 8 }}>
-                            Technologies:
-                          </Text>
-                          <Space wrap size={[8, 8]}>
-                            {project.techStack.slice(0, 6).map((tech) => (
-                              <Tag key={tech}>{tech}</Tag>
-                            ))}
-                            {project.techStack.length > 6 && (
-                              <Tag>+{project.techStack.length - 6} more</Tag>
-                            )}
-                          </Space>
-                        </div>
-
-                        {/* Action Button */}
-                        <Button
-                          type="primary"
-                          icon={<EyeOutlined />}
-                          onClick={() => history.push(`/project/${project.id}`)}
-                          block
-                          size="large"
-                        >
-                          View Project Details
-                        </Button>
-                      </Space>
-                    </div>
-                  </Badge.Ribbon>
-                )}
-                
-                {!project.featured && (
-                  <Space direction="vertical" size={16} style={{ width: '100%' }}>
-                    {/* Same content structure for non-featured projects */}
-                    <div>
-                      <Text type="secondary" style={{ fontSize: 12 }}>
-                        {project.company}
-                      </Text>
-                      <Title level={4} style={{ margin: '8px 0' }}>
-                        {project.title}
-                      </Title>
-                      <Space size="middle" wrap>
-                        <Text type="secondary">
-                          <TeamOutlined /> {project.role}
-                        </Text>
-                        <Text type="secondary">
-                          <CalendarOutlined /> {project.duration}
-                        </Text>
-                      </Space>
-                    </div>
-
-                    <Paragraph style={{ marginBottom: 0 }}>
-                      {project.summary}
-                    </Paragraph>
-
-                    <div>
-                      <Text strong style={{ display: 'block', marginBottom: 8 }}>
-                        Key Impact:
-                      </Text>
-                      <ul style={{ margin: 0, paddingLeft: 20 }}>
-                        {project.impact.slice(0, 2).map((item, index) => (
-                          <li key={index}>
-                            <Text type="secondary">{item}</Text>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    <div>
-                      <Text strong style={{ display: 'block', marginBottom: 8 }}>
-                        Technologies:
-                      </Text>
-                      <Space wrap size={[8, 8]}>
-                        {project.techStack.slice(0, 6).map((tech) => (
-                          <Tag key={tech}>{tech}</Tag>
-                        ))}
-                        {project.techStack.length > 6 && (
-                          <Tag>+{project.techStack.length - 6} more</Tag>
-                        )}
-                      </Space>
-                    </div>
-
-                    <Button
-                      type="primary"
-                      icon={<EyeOutlined />}
-                      onClick={() => history.push(`/project/${project.id}`)}
-                      block
-                      size="large"
-                    >
-                      View Project Details
-                    </Button>
-                  </Space>
-                )}
-              </Card>
+              {project.featured ? (
+                <Badge.Ribbon text="Featured" color="red">
+                  {renderCard(project)}
+                </Badge.Ribbon>
+              ) : renderCard(project)}
             </Col>
           ))}
         </Row>
 
-        {/* Bottom CTA */}
         <div style={{ textAlign: 'center', marginTop: 64 }}>
           <Title level={3} style={{ marginBottom: 16 }}>
             Interested in working together?

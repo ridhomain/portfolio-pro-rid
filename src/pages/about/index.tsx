@@ -175,6 +175,7 @@ const AboutPage: React.FC = () => {
                   display: 'block',
                   backgroundColor: '#1890ff'
                 }}
+                src="/profile.jpg"
               />
               <div>
                 <Title level={1} style={{ marginBottom: '8px' }}>
@@ -245,15 +246,15 @@ const AboutPage: React.FC = () => {
             >
               <Space direction="vertical" size="large" style={{ width: '100%' }}>
                 <div>
-                  <Title level={4} style={{ color: '#1890ff', marginBottom: '12px' }}>
+                  {/* <Title level={4} style={{ color: '#1890ff', marginBottom: '12px' }}>
                     Practical Creativity: Dancing with Constraints
-                  </Title>
+                  </Title> */}
                   <Paragraph style={{ fontSize: '16px', lineHeight: 1.7 }}>
                     {data.about.description || 'With 6 years of experience in software engineering, I\'ve evolved from a curious developer into a technical leader who bridges the gap between complex technical concepts and business outcomes.'}
                   </Paragraph>
                   
                   <Paragraph style={{ fontSize: '16px', lineHeight: 1.7 }}>
-                    I believe the best engineering happens within constraints, not despite them. Where others see limitations, I see creative opportunities. My decisions aren't driven by what's trending on tech Twitter, but by what actually moves the needle - proven tools, pragmatic architectures, and solutions that engineers can maintain at 3 AM without cursing my name.
+                    I'm the engineer who thrives in the space between ambitious goals and real-world constraints. My approach is simple: understand the problem deeply, challenge assumptions relentlessly, and build solutions that actually work. I don't chase the latest framework hype or over-engineer for imaginary scale. Instead, I focus on what matters - shipping reliable systems that solve real problems and create lasting impact.
                   </Paragraph>
 
                   <Paragraph style={{ fontSize: '16px', lineHeight: 1.7 }}>
