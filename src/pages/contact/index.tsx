@@ -1,13 +1,13 @@
 // src/pages/contact/index.tsx
-import React from 'react';
-import { Typography, Space, Button } from 'antd';
-import { 
-  MailOutlined, 
-  WhatsAppOutlined,
-  MessageOutlined
-} from '@ant-design/icons';
-import { usePortfolio } from '@/hooks/usePortfolio';
 import Loading from '@/components/Loading';
+import { usePortfolio } from '@/hooks/usePortfolio';
+import {
+  MailOutlined,
+  MessageOutlined,
+  WhatsAppOutlined,
+} from '@ant-design/icons';
+import { Button, Space, Typography } from 'antd';
+import React from 'react';
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -42,39 +42,46 @@ const ContactPage: React.FC = () => {
   }
 
   return (
-    <div style={{ 
-      flex: 1,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '24px'
-    }}>
-      <div style={{ 
-        textAlign: 'center', 
-        maxWidth: 600,
-        width: '100%'
-      }}>
+    <div
+      style={{
+        flex: 1,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '24px',
+      }}
+    >
+      <div
+        style={{
+          textAlign: 'center',
+          maxWidth: 600,
+          width: '100%',
+        }}
+      >
         <Title level={2} style={{ marginBottom: 16 }}>
           Let's Connect
         </Title>
-        
+
         <Text type="secondary" style={{ fontSize: 16 }}>
           Have a project in mind? Let's talk about it.
         </Text>
-        
-        <Paragraph style={{ 
-          fontSize: 18, 
-          marginTop: 32, 
-          marginBottom: 48,
-          color: 'rgba(0, 0, 0, 0.65)'
-        }}>
-          {data.contact.message || "I'm always interested in new opportunities and collaborations. Feel free to reach out via email or WhatsApp."}
+
+        <Paragraph
+          style={{
+            fontSize: 18,
+            marginTop: 32,
+            marginBottom: 48,
+            color: 'rgba(0, 0, 0, 0.65)',
+          }}
+        >
+          {data.contact.message ||
+            "I'm always interested in new opportunities and collaborations. Feel free to reach out via email or WhatsApp."}
         </Paragraph>
 
         <Space direction="vertical" size="large" style={{ width: '100%' }}>
           {Object.entries(data.contact).map(([platform, value]) => {
             if (platform === 'message' || !value) return null;
-            
+
             return (
               <Button
                 key={platform}
@@ -84,11 +91,11 @@ const ContactPage: React.FC = () => {
                 href={getHref(platform, value)}
                 target={platform !== 'email' ? '_blank' : undefined}
                 block
-                style={{ 
-                  maxWidth: 300, 
+                style={{
+                  maxWidth: 300,
                   margin: '0 auto',
                   height: 48,
-                  fontSize: 16
+                  fontSize: 16,
                 }}
               >
                 {platform === 'email' ? value : `Connect on ${platform}`}
@@ -98,11 +105,13 @@ const ContactPage: React.FC = () => {
         </Space>
 
         {/* Additional message */}
-        <Paragraph style={{ 
-          marginTop: 48, 
-          fontSize: 14, 
-          color: 'rgba(0, 0, 0, 0.45)' 
-        }}>
+        <Paragraph
+          style={{
+            marginTop: 48,
+            fontSize: 14,
+            color: 'rgba(0, 0, 0, 0.45)',
+          }}
+        >
           I typically respond within 24-48 hours.
         </Paragraph>
       </div>

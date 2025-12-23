@@ -2,8 +2,8 @@ import type { ThemeConfig } from 'antd';
 
 export const theme: ThemeConfig = {
   token: {
-    // Primary brand color - grass green
-    colorPrimary: '#165c3b',
+    // Primary brand color - light oakwood
+    colorPrimary: '#c9a66b',
     
     // Base colors
     colorBgContainer: '#ffffff',
@@ -37,9 +37,9 @@ export const theme: ThemeConfig = {
     },
     Menu: {
       // Use primary color for all menu states
-      itemSelectedColor: '#165c3b',
-      horizontalItemSelectedColor: '#165c3b',
-      itemHoverColor: '#165c3b',
+      itemSelectedColor: '#c9a66b',
+      horizontalItemSelectedColor: '#c9a66b',
+      itemHoverColor: '#c9a66b',
       // Remove default backgrounds
       itemActiveBg: 'transparent',
       itemSelectedBg: 'transparent',

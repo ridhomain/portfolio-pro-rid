@@ -1,6 +1,11 @@
 import { defineConfig } from "umi";
 
 export default defineConfig({
+  lessLoader: {
+    lessOptions: {
+      javascriptEnabled: true,
+    },
+  },
   title: 'Ahmad Ridho - Portfolio',
   favicons: ['/favicon.ico'],
   metas: [
