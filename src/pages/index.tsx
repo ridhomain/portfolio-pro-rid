@@ -10,27 +10,27 @@ const { Title, Paragraph, Text } = Typography;
 
 const HomePage: React.FC = () => {
   const { data, loading } = usePortfolio();
-  
+
   if (loading) {
     return <Loading tip="Loading portfolio..." />;
   }
-  
+
   return (
-    <div style={{ 
+    <div style={{
       flex: 1,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       padding: '24px'
     }}>
-      <div style={{ 
+      <div style={{
         textAlign: 'center',
         maxWidth: '800px',
         width: '100%'
       }}>
-        <Text 
-          type="secondary" 
-          style={{ 
+        <Text
+          type="secondary"
+          style={{
             fontSize: '14px',
             letterSpacing: '1px',
             textTransform: 'uppercase',
@@ -40,10 +40,10 @@ const HomePage: React.FC = () => {
         >
           Welcome to my portfolio
         </Text>
-        
-        <Title 
-          level={1} 
-          style={{ 
+
+        <Title
+          level={1}
+          style={{
             fontSize: 'clamp(2rem, 6vw, 3.5rem)',
             marginBottom: '8px',
             fontWeight: 700,
@@ -52,11 +52,11 @@ const HomePage: React.FC = () => {
         >
           {data.about.name || 'Ahmad Ridho'}
         </Title>
-        
-        <Title 
-          level={2} 
-          type="secondary" 
-          style={{ 
+
+        <Title
+          level={2}
+          type="secondary"
+          style={{
             fontSize: 'clamp(1.125rem, 3vw, 1.5rem)',
             fontWeight: 400,
             marginTop: 0,
@@ -65,11 +65,11 @@ const HomePage: React.FC = () => {
         >
           {data.about.title || 'Senior Backend Engineer'}
         </Title>
-        
-        <Paragraph 
-          style={{ 
-            fontSize: '16px', 
-            maxWidth: '600px', 
+
+        <Paragraph
+          style={{
+            fontSize: '16px',
+            maxWidth: '600px',
             margin: '0 auto 32px',
             lineHeight: 1.7,
             color: 'rgba(0, 0, 0, 0.65)'
@@ -79,27 +79,27 @@ const HomePage: React.FC = () => {
         </Paragraph>
 
         {/* CTA Buttons - Stack on mobile */}
-        <Space 
-          size="middle" 
+        <Space
+          size="middle"
           wrap
           style={{ justifyContent: 'center', marginBottom: '48px' }}
         >
-          <Button 
-            type="primary" 
+          <Button
+            type="primary"
             size="large"
             icon={<ArrowRightOutlined />}
             onClick={() => history.push('/projects')}
-            style={{ 
+            style={{
               minWidth: '160px',
               height: '48px'
             }}
           >
             View Projects
           </Button>
-          <Button 
+          <Button
             size="large"
             onClick={() => history.push('/contact')}
-            style={{ 
+            style={{
               minWidth: '160px',
               height: '48px'
             }}

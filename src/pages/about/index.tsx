@@ -1,11 +1,11 @@
 // src/pages/about/index.tsx
 import React from 'react';
 import { Typography, Card, Row, Col, Timeline, Space, Statistic, Divider, Avatar, Tag, Badge } from 'antd';
-import { 
-  UserOutlined, 
-  CodeOutlined, 
-  TrophyOutlined, 
-  TeamOutlined, 
+import {
+  UserOutlined,
+  CodeOutlined,
+  TrophyOutlined,
+  TeamOutlined,
   CalendarOutlined,
   BankOutlined,
   RocketOutlined,
@@ -45,7 +45,7 @@ const AboutPage: React.FC = () => {
     },
     {
       title: 'Specialization',
-      value: 'Backend + Architecture',
+      value: 'Node.js, JavaScript, System Design',
       icon: <TeamOutlined />,
       color: '#eb2f96'
     },
@@ -91,8 +91,8 @@ const AboutPage: React.FC = () => {
       color: '#722ed1',
       children: (
         <div>
-          <Title level={4} style={{ marginBottom: '4px' }}>Fullstack Developer → Software Engineer</Title>
-          <Text type="secondary" style={{ fontSize: '14px' }}>Freelance • 2019 - 2021</Text>
+          <Title level={4} style={{ marginBottom: '4px' }}>Fullstack Developer</Title>
+          <Text type="secondary" style={{ fontSize: '14px' }}>Contract • 2019 - 2021</Text>
           <Paragraph style={{ marginTop: '8px', marginBottom: '8px' }}>
             Delivered end-to-end solutions for enterprise clients including Yamaha and BNI. Focused on understanding business processes to build systems that actually solve problems.
           </Paragraph>
@@ -142,11 +142,12 @@ const AboutPage: React.FC = () => {
   // Use skills from Google Sheets data with new categorization
   const techStack = {
     languages_expert: data.skills?.Languages_Expert || ['JavaScript', 'TypeScript'],
-    backend_expert: data.skills?.Backend_Expert || ['Fastify', 'HapiJS', 'Express'],
+    backend_expert: data.skills?.Backend_Expert || ['Fastify', 'HapiJS'],
+    frontend_expert: data.skills?.Frontend_Expert || ['React', 'UmiJs', 'Ant Design', 'MobX'],
     languages_intermediate: data.skills?.Languages_Intermediate || ['Go', 'Python'],
-    backend_intermediate: data.skills?.Backend_Intermediate || ['Gin', 'Fiber', 'Goroutines', 'WebSockets (Melody)'],
+    backend_intermediate: data.skills?.Backend_Intermediate || ['Gin', 'Fiber', 'WebSockets (Melody)'],
     python: data.skills?.Python || ['Django', 'Odoo'],
-    frontend_intermediate: data.skills?.Frontend_Intermediate || ['React', 'UmiJS', 'Next.js', 'Ant Design'],
+    frontend_intermediate: data.skills?.Frontend_Intermediate || ['XState', 'Next.js'],
     databases: data.skills?.Databases || ['PostgreSQL', 'MongoDB', 'Redis'],
     datalake: data.skills?.DataLake || ['Trino', 'Iceberg', 'MinIO'],
     messaging: data.skills?.Messaging || ['NATS', 'NATS JetStream'],
@@ -167,11 +168,11 @@ const AboutPage: React.FC = () => {
         <Row justify="center" style={{ marginBottom: '48px' }}>
           <Col xs={24} sm={20} md={16} lg={12}>
             <Space direction="vertical" size="large" style={{ width: '100%', textAlign: 'center' }}>
-              <Avatar 
-                size={120} 
-                icon={<UserOutlined />} 
-                style={{ 
-                  margin: '0 auto', 
+              <Avatar
+                size={120}
+                icon={<UserOutlined />}
+                style={{
+                  margin: '0 auto',
                   display: 'block',
                   backgroundColor: '#1890ff'
                 }}
@@ -193,10 +194,10 @@ const AboutPage: React.FC = () => {
         <Row gutter={[24, 24]} style={{ marginBottom: '48px' }}>
           {stats.map((stat, index) => (
             <Col xs={12} sm={12} md={6} key={index}>
-              <Card 
-                hoverable 
-                style={{ 
-                  textAlign: 'center', 
+              <Card
+                hoverable
+                style={{
+                  textAlign: 'center',
                   height: '100%',
                   borderRadius: '12px',
                   boxShadow: '0 4px 12px rgba(0,0,0,0.05)'
@@ -204,19 +205,19 @@ const AboutPage: React.FC = () => {
                 bodyStyle={{ padding: '24px 16px' }}
               >
                 <Space direction="vertical" size="small" style={{ width: '100%' }}>
-                  <div style={{ fontSize: '32px', color: stat.color }}>
+                  {/*<div style={{ fontSize: '32px', color: stat.color }}>
                     {stat.icon}
-                  </div>
+                  </div>*/}
                   {typeof stat.value === 'string' && (stat.value.includes(',') || stat.value.includes('+')) ? (
                     <Text strong style={{ fontSize: '14px', display: 'block' }}>
                       {stat.value}
                     </Text>
                   ) : (
-                    <Statistic 
-                      value={stat.value} 
+                    <Statistic
+                      value={stat.value}
                       suffix={stat.suffix}
-                      valueStyle={{ 
-                        fontSize: 'clamp(20px, 4vw, 28px)', 
+                      valueStyle={{
+                        fontSize: 'clamp(20px, 4vw, 28px)',
                         fontWeight: 'bold',
                         color: stat.color
                       }}
@@ -234,13 +235,13 @@ const AboutPage: React.FC = () => {
         <Row gutter={[32, 32]}>
           {/* About Me Section */}
           <Col xs={24} lg={12}>
-            <Card 
+            <Card
               title={
                 <Space>
                   <BulbOutlined style={{ color: '#1890ff' }} />
                   <span>My Story</span>
                 </Space>
-              } 
+              }
               style={{ height: '100%', borderRadius: '12px' }}
               headStyle={{ borderBottom: '2px solid #f0f0f0' }}
             >
@@ -252,7 +253,7 @@ const AboutPage: React.FC = () => {
                   <Paragraph style={{ fontSize: '16px', lineHeight: 1.7 }}>
                     {data.about.description || 'With 6 years of experience in software engineering, I\'ve evolved from a curious developer into a technical leader who bridges the gap between complex technical concepts and business outcomes.'}
                   </Paragraph>
-                  
+
                   <Paragraph style={{ fontSize: '16px', lineHeight: 1.7 }}>
                     I'm the engineer who thrives in the space between ambitious goals and real-world constraints. My approach is simple: understand the problem deeply, challenge assumptions relentlessly, and build solutions that actually work. I don't chase the latest framework hype or over-engineer for imaginary scale. Instead, I focus on what matters - shipping reliable systems that solve real problems and create lasting impact.
                   </Paragraph>
@@ -271,12 +272,12 @@ const AboutPage: React.FC = () => {
                   </Title>
                   <Space direction="vertical" size="middle" style={{ width: '100%' }}>
                     <div>
-                      <Text strong>🏗️ Engineering Foundation:</Text>
+                      <Text strong>Engineering Foundation:</Text>
                       <br />
                       <Text type="secondary">Civil Engineering isn't just my degree - it's my thinking framework. The analytical rigor and systematic approach that others might miss comes naturally.</Text>
                     </div>
                     <div>
-                      <Text strong>🎯 Business Acumen:</Text>
+                      <Text strong>Business Acumen:</Text>
                       <br />
                       <Text type="secondary">Top-notch ability to analyze businesses holistically. Given context, I can read between the lines and understand the real problems beyond technical requirements.</Text>
                     </div>
@@ -286,7 +287,7 @@ const AboutPage: React.FC = () => {
                       <Text type="secondary">Fast adaptation while maintaining depth. I quickly identify patterns and apply proven solutions across different contexts.</Text>
                     </div>
                     <div>
-                      <Text strong>🔍 Systems Thinking:</Text>
+                      <Text strong>Systems Thinking:</Text>
                       <br />
                       <Text type="secondary">See the forest AND the trees. I understand how individual decisions ripple through entire systems, enabling transformative improvements.</Text>
                     </div>
@@ -298,7 +299,7 @@ const AboutPage: React.FC = () => {
 
           {/* Technical Skills */}
           <Col xs={24} lg={12}>
-            <Card 
+            <Card
               title={
                 <Space>
                   <ToolOutlined style={{ color: '#52c41a' }} />
@@ -381,18 +382,15 @@ const AboutPage: React.FC = () => {
                       </Space>
                     </div>
                     <div>
-                      <Text strong>Data Lake:</Text>
+                      <Text strong>Data Warehouse:</Text>
                       <Space wrap style={{ marginLeft: '8px' }}>
                         {techStack.datalake.map(tech => (
                           <Tag key={tech} color="purple">{tech}</Tag>
                         ))}
                       </Space>
-                      <Text type="secondary" style={{ fontSize: '12px', display: 'block', marginTop: '4px' }}>
-                        ✨ Implemented enterprise data lake solution
-                      </Text>
                     </div>
                     <div>
-                      <Text strong>Messaging & Events:</Text>
+                      <Text strong>Message Brokers & Event Streaming:</Text>
                       <Space wrap style={{ marginLeft: '8px' }}>
                         {techStack.messaging.map(tech => (
                           <Tag key={tech} color="orange">{tech}</Tag>
@@ -408,7 +406,7 @@ const AboutPage: React.FC = () => {
                       </Space>
                     </div>
                     <div>
-                      <Text strong>DevOps:</Text>
+                      <Text strong>DevOps & Other Tools:</Text>
                       <Space wrap style={{ marginLeft: '8px' }}>
                         {techStack.devops.map(tech => (
                           <Tag key={tech}>{tech}</Tag>
@@ -420,7 +418,7 @@ const AboutPage: React.FC = () => {
 
                 <Divider />
 
-                <div>
+                {/*<div>
                   <Badge.Ribbon text="Learning Path" color="purple">
                     <div style={{ padding: '8px 0' }}>
                       <Title level={5} style={{ marginBottom: '8px' }}>Future Focus</Title>
@@ -441,7 +439,7 @@ const AboutPage: React.FC = () => {
                       </Space>
                     </div>
                   </Badge.Ribbon>
-                </div>
+                </div>*/}
               </Space>
             </Card>
           </Col>
@@ -450,7 +448,7 @@ const AboutPage: React.FC = () => {
         {/* Career Journey */}
         <Row style={{ marginTop: '48px' }}>
           <Col xs={24}>
-            <Card 
+            <Card
               title={
                 <Space>
                   <RocketOutlined style={{ color: '#722ed1' }} />
@@ -472,7 +470,7 @@ const AboutPage: React.FC = () => {
         {/* Education */}
         <Row style={{ marginTop: '32px' }}>
           <Col xs={24}>
-            <Card 
+            <Card
               title={
                 <Space>
                   <BookOutlined style={{ color: '#1890ff' }} />
@@ -519,21 +517,20 @@ const AboutPage: React.FC = () => {
         {/* Personal Touch */}
         <Row style={{ marginTop: '32px' }}>
           <Col xs={24}>
-            <Card 
-              title="Beyond the Code" 
+            <Card
+              title="Beyond the Code"
               style={{ borderRadius: '12px', textAlign: 'center' }}
               headStyle={{ borderBottom: '2px solid #f0f0f0' }}
             >
               <Space direction="vertical" size="middle" style={{ width: '100%' }}>
                 <Paragraph style={{ fontSize: '16px', lineHeight: 1.7, maxWidth: '600px', margin: '0 auto' }}>
-                  When I'm not architecting systems or solving complex technical challenges, you'll find me gaming 🎮 
-                  (which keeps my problem-solving skills sharp) and reading books 📚 to continuously learn and stay inspired.
+                  When I'm not tinkering with technical challenges, you'll find me gaming, coffe chilling and reading books to continuously learn and stay inspired.
                 </Paragraph>
-                <div style={{ marginTop: '24px' }}>
+                {/*<div style={{ marginTop: '24px' }}>
                   <Text style={{ fontSize: '18px', fontStyle: 'italic', color: '#1890ff' }}>
                     {data.about.philosophy || '"The best solution isn\'t the fanciest—it\'s the one that works within constraints while solving real problems"'}
                   </Text>
-                </div>
+                </div>*/}
               </Space>
             </Card>
           </Col>
